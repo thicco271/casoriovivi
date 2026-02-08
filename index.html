@@ -242,6 +242,62 @@
       z-index:60;
     }
     .toast.show{opacity:1}
+
+    /* Play/pause button styling */
+    .audio-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.45);
+      border: 1px solid rgba(255,255,255,.7);
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 80;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: transform .25s ease;
+    }
+    .audio-control:hover {
+      transform: scale(1.1);
+    }
+    .audio-control i {
+      pointer-events: none;
+      font-size: 1.4em;
+    }
+
+    /* Mobile adjustments: enlarge text and icons on small screens */
+    @media (max-width: 520px){
+      .title strong{
+        font-size:30px;
+        letter-spacing:1.5px;
+      }
+      .title span{
+        font-size:16px;
+      }
+      .note{
+        font-size:15px;
+      }
+      label{
+        font-size:14px;
+      }
+      input,select{
+        font-size:18px;
+        padding:14px 14px;
+      }
+      .primary{
+        font-size:17px;
+        padding:16px 18px;
+      }
+      .hotspot i{
+        font-size:1.8em;
+      }
+    }
     /* Floating hearts overlay and animations */
     .hearts{
       pointer-events: none;
@@ -307,10 +363,14 @@
   <div class="hearts"></div>
   <!-- Background love song. Replace como_e_grande.mp3 with your audio file -->
   <audio id="loveSong" preload="auto">
-    <!-- Use relative path so GitHub Pages serves the song from the same origin -->
     <source src="como_e_grande.mp3" type="audio/mpeg">
     Seu navegador não suporta reprodução de áudio.
   </audio>
+
+  <!-- Play/Pause button for the background love song -->
+  <button id="btnPlayPause" class="audio-control" aria-label="Tocar música">
+    <i class="fa-solid fa-play"></i>
+  </button>
   
   </div>
   </div>
@@ -489,8 +549,7 @@
       var song = document.getElementById('loveSong');
       if (song) {
         try {
-          // Seek to approximately 80 seconds into the track (adjust as needed)
-          song.currentTime = 80;
+          // Play the song without seeking. Some browsers block seeking before the media is loaded
           song.play();
         } catch(e) {
           console.warn('Audio playback failed', e);
@@ -515,6 +574,29 @@
       createHearts();
       launchConfetti();
     });
+
+    // Initialize play/pause button functionality
+    (function() {
+      var playPauseBtn = document.getElementById('btnPlayPause');
+      var song = document.getElementById('loveSong');
+      var isPlaying = false;
+      if (playPauseBtn && song) {
+        playPauseBtn.addEventListener('click', function() {
+          if (isPlaying) {
+            song.pause();
+            playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+          } else {
+            song.play();
+            playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+          }
+          isPlaying = !isPlaying;
+        });
+        song.addEventListener('ended', function() {
+          isPlaying = false;
+          playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+        });
+      }
+    })();
   </script>
 </body>
 </html>
