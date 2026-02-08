@@ -58,8 +58,8 @@
       position: relative;
       background: #fff;
       width: 100%;
-      /* Ensure the invitation area has a visible height on small screens */
-      min-height: 520px;
+      /* The invite height is dictated by the embedded image; remove fixed min-height to prevent excess bottom space on mobile */
+      /* min-height removed */
     }
     /* High‑resolution photo container layered behind the invitation graphic */
     .invite .photo{
