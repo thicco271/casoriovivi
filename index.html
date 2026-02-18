@@ -1,628 +1,389 @@
-<!--
-  Convite de casamento interativo
-  
-  Este arquivo HTML reimagina o convite de casamento fornecido originalmente
-  como uma imagem estática. Ele traz todos os textos (nomes dos noivos,
-  convite, data, local etc.) renderizados em HTML/CSS, permitindo ajustes
-  simples sem necessidade de editar uma imagem. O layout se inspira no
-  design do convite original: uma foto do casal ocupa a metade superior do
-  cartão, seguida por uma área branca com os nomes e informações do evento
-  em destaque. Abaixo disso, três botões interativos possibilitam
-  confirmar presença via WhatsApp, abrir o endereço no Google Maps e
-  exibir a chave Pix. O fundo da página possui um gradiente suave, e
-  corações animados e confetes são exibidos ao carregar a página para
-  acrescentar um toque romântico.
-
-  Para personalizar:
-  - Substitua as imagens “foto_casal.jpg” e “foto_beach.jpg” pelos
-    arquivos desejados (os dois arquivos incluídos pelo usuário foram
-    renomeados abaixo para facilitar a leitura do código).
-  - Ajuste as variáveis PIX_KEY, WHATS_NUMBER e DESTINO no script
-    conforme necessário.
-  - Altere os textos dentro de .invite-details para os nomes, data e
-    endereço corretos do casamento.
-
-  Observação: este modelo assume que o arquivo de áudio "como_e_grande.mp3"
-  está presente na mesma pasta do HTML. Caso deseje trocar a música,
-  substitua o nome na tag <audio> e no iframe.
--->
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Convite de Casamento Interativo</title>
-  <meta name="description" content="Convite de casamento interativo com confirmação de presença, como chegar e Pix." />
-  <!-- Importa fontes elegantes: Cinzel para títulos e Poppins para textos -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome para ícones -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Viviane & Israel • 23.05.2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <!-- Biblioteca de confetes para a celebração -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <style>
-    :root{
-      /* Paleta de cores suave e romântica */
-      --bg:#f9f4ef;
-      --text:#2b3040;
-      --muted:#6c7a8a;
-      --shadow:0 18px 60px rgba(0,0,0,.3);
-      --radius:18px;
-      --brand:#c7a35a;
-      --brand2:#e3c75e;
-    }
-    *{box-sizing:border-box;margin:0;padding:0;}
-    html,body{height:100%;}
-    body{
-      font-family:'Poppins', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      color:var(--text);
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      padding:24px 12px 48px;
-      min-height:100vh;
-      /* Fundo com gradiente animado em tons pastel */
-      background: linear-gradient(135deg, #fdf3f8, #faf7e6, #eaf4fc, #f4e7f8);
-      background-size: 800% 800%;
-      animation: gradient 20s ease infinite;
-      overflow-x:hidden;
-    }
-    @keyframes gradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .wrap{
-      width:min(520px, 100%);
-      position:relative;
-    }
-    .card{
-      background: rgba(255,255,255,.15);
-      border:1px solid rgba(255,255,255,.3);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      position:relative;
-      z-index:5;
-      animation: fadeInCard 1.2s ease forwards;
-    }
-    @keyframes fadeInCard{
-      0%{opacity:0;transform:translateY(20px);}
-      100%{opacity:1;transform:translateY(0);}
-    }
-    /* Seção do convite que engloba foto e texto */
-    .invite{
-      position:relative;
-      width:100%;
-      background:#fff;
-      overflow:hidden;
-    }
-    /* Foto de fundo do casal */
-    .invite-photo{
-      width:100%;
-      height:260px;
-      /* Imagem do casal embutida em base64 para não depender de arquivos externos */
-      background-image:url("data:image/jpeg;base64,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");
-      background-size:cover;
-      background-position:center;
-      filter:brightness(0.85);
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+    :root { --gold: #d4af37; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.82)), url('1.png') center/cover no-repeat fixed;
+      color: #fefefe;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
     }
 
-    /* Foto adicional decorativa mostrada no final do convite */
-    .decorative-photo{
-      width:100%;
-      height:200px;
-      /* Segunda imagem embutida em base64 (foto de praia) */
-      background-image:url("data:image/jpeg;base64,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");
-      background-size:cover;
-      background-position:center;
-      margin-top:16px;
-      border-radius:var(--radius);
-      overflow:hidden;
-      /* Esconder a foto decorativa porque ela será usada apenas para carregar a imagem no slideshow */
-      display:none;
+    #hearts-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.75;
     }
-    /* Área de detalhes com nomes, convite e local */
-    .invite-details{
-      padding:24px 18px 32px;
-      background:#fff;
+
+    .card {
+      position: relative;
+      z-index: 10;
+      background: rgba(15,15,15,0.82);
+      backdrop-filter: blur(32px);
+      border: 1px solid rgba(212,175,55,0.65);
+      box-shadow: 0 35px 90px rgba(0,0,0,0.9);
+      border-radius: 36px;
+      max-width: 520px;
+      width: 100%;
+      overflow: hidden;
+      transition: transform 0.2s cubic-bezier(0.23,1,0.32,1);
     }
-    .invite-details h1{
-      font-family:'Cinzel', serif;
-      font-size:32px;
-      font-weight:700;
-      color:var(--brand);
-      text-align:center;
-      letter-spacing:2px;
-      margin-bottom:4px;
+
+    /* Diptych ULTRA PREMIUM */
+    .diptych {
+      display: grid;
+      grid-template-columns: 1fr 5px 1fr;
+      height: 440px;
+      position: relative;
     }
-    .invite-details h2{
-      font-family:'Cinzel', serif;
-      font-size:24px;
-      font-weight:400;
-      color:var(--brand);
-      text-align:center;
-      letter-spacing:1px;
-      margin-bottom:16px;
+    .photo-left, .photo-right {
+      position: relative;
+      overflow: hidden;
     }
-    .invite-details p{
-      font-size:15px;
-      color:var(--text);
-      text-align:center;
-      margin-bottom:12px;
-      line-height:1.5;
+    .photo-left img, .photo-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 12s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
-    .invite-details .date-line{
-      border-top:1px solid rgba(0,0,0,.2);
-      margin:18px 0 16px;
-      padding-top:12px;
-      text-align:center;
-      font-weight:600;
-      font-size:16px;
+    .photo-left:hover img, .photo-right:hover img { transform: scale(1.15); }
+    .photo-left::after, .photo-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.85));
     }
-    /* Botões de ação (RSVP, Maps, Pix) */
-    .actions{
-      display:flex;
-      justify-content:space-around;
-      margin-top:18px;
+    .caption {
+      position: absolute;
+      bottom: 38px;
+      left: 0; right: 0;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      line-height: 1.1;
+      color: #fff;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.95);
+      letter-spacing: 0.5px;
     }
-    .action-btn{
-      flex:1;
-      margin:0 6px;
-      border:0;
-      border-radius:12px;
-      padding:14px 0;
-      cursor:pointer;
-      background:rgba(11,42,72,.06);
-      border:1px solid rgba(11,42,72,.18);
-      color:var(--brand);
-      font-weight:600;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:6px;
-      transition:background .25s ease, transform .25s ease;
+    .divider {
+      background: linear-gradient(#d4af37, #f5e8b3, #d4af37);
+      width: 5px;
+      position: relative;
+      box-shadow: 0 0 25px #d4af37;
     }
-    .action-btn i{
-      font-size:1.5em;
+    .divider::before {
+      content: '♡';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 52px;
+      color: #d4af37;
+      text-shadow: 0 0 30px #d4af37;
+      animation: pulse-heart 2.8s infinite ease-in-out;
     }
-    .action-btn:hover{
-      background:rgba(255,255,255,.45);
-      transform:translateY(-3px);
+    @keyframes pulse-heart {
+      0%,100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.35); }
     }
-    /* Modal de confirmação de presença e modal do Pix (reaproveitados do convite original) */
-    .modal{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      background: rgba(0,0,0,.58);
-      backdrop-filter: blur(7px);
-      -webkit-backdrop-filter: blur(7px);
-      z-index:50;
+
+    .names {
+      font-family: 'Playfair Display', serif;
+      letter-spacing: -4px;
+      background: linear-gradient(90deg, #d4af37, #fff, #d4af37);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gold-shine 8s linear infinite;
     }
-    .modal.open{display:flex;}
-    .sheet{
-      width:min(560px, 100%);
-      background:#fff;
-      color:var(--text);
-      border-radius:18px;
-      overflow:hidden;
-      box-shadow:0 26px 90px rgba(0,0,0,.55);
-      border:1px solid rgba(0,0,0,.08);
+    @keyframes gold-shine {
+      0%,100% { background-position: 0% 50%; }
+      50% { background-position: 200% 50%; }
     }
-    .head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:14px;
-      background:linear-gradient(135deg, rgba(29,95,138,.12), rgba(13,59,102,.06));
-      border-bottom:1px solid rgba(15,34,54,.10);
+
+    .music-bar {
+      height: 3px;
+      background: linear-gradient(90deg, #d4af37, #fff);
+      animation: music-wave 4s linear infinite;
     }
-    .title{display:flex;flex-direction:column;gap:3px;}
-    .title strong{
-      font-family:'Cinzel', serif;
-      font-size:26px;
-      letter-spacing:2px;
-      color:var(--brand);
-    }
-    .title span{
-      font-family:'Poppins', sans-serif;
-      font-size:14px;
-      color:var(--muted);
-    }
-    .close{
-      border:1px solid rgba(15,34,54,.12);
-      background:rgba(255,255,255,.92);
-      border-radius:12px;
-      padding:10px 12px;
-      cursor:pointer;
-      font-weight:900;
-    }
-    .body{padding:14px;}
-    .note{margin:0 0 12px 0;color:var(--muted);font-size:14px;line-height:1.45;}
-    label{display:block;font-size:12.5px;color:var(--muted);margin:0 0 5px 0;}
-    input, select{
-      width:100%;
-      padding:12px 12px;
-      border-radius:12px;
-      border:1px solid rgba(15,34,54,.18);
-      outline:none;
-      font-size:16px;
-      background:#fff;
-      transition:box-shadow .18s ease, border-color .18s ease;
-    }
-    input:focus, select:focus{
-      border-color:rgba(13,59,102,.45);
-      box-shadow:0 0 0 5px rgba(13,59,102,.16);
-    }
-    .grid{display:grid;gap:10px;}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-    @media(max-width:520px){.row{grid-template-columns:1fr;}}
-    .primary{
-      border:0;
-      border-radius:14px;
-      padding:14px 16px;
-      cursor:pointer;
-      font-weight:950;
-      color:#fff;
-      background:linear-gradient(135deg, var(--brand2), var(--brand));
-      box-shadow:0 10px 24px rgba(13,59,102,.28);
-    }
-    .pixbox{
-      margin-top:10px;
-      padding:12px;
-      border-radius:14px;
-      background:rgba(11,42,72,.06);
-      border:1px dashed rgba(11,42,72,.22);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .pixkey{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-weight:950;
-      letter-spacing:.3px;
-      word-break: break-all;
-      color:#0b2a48;
-    }
-    .copy{
-      border:1px solid rgba(15,34,54,.14);
-      background:#fff;
-      border-radius:12px;
-      padding:10px 12px;
-      cursor:pointer;
-      font-weight:900;
-      white-space:nowrap;
-    }
-    .toast{
-      position:fixed;
-      left:50%;
-      bottom:18px;
-      transform:translateX(-50%);
-      background:rgba(0,0,0,.84);
-      color:#fff;
-      padding:10px 12px;
-      border-radius:999px;
-      font-size:14px;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .22s ease;
-      z-index:60;
-    }
-    .toast.show{opacity:1;}
-    /* Controle de áudio flutuante */
-    .audio-control{
-      position:fixed;
-      bottom:20px;
-      right:20px;
-      width:56px;
-      height:56px;
-      border-radius:50%;
-      background:rgba(255,255,255,.45);
-      border:1px solid rgba(255,255,255,.7);
-      color:var(--brand);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor:pointer;
-      z-index:80;
-      backdrop-filter:blur(6px);
-      -webkit-backdrop-filter:blur(6px);
-      transition:transform .25s ease;
-    }
-    .audio-control:hover{transform:scale(1.1);}    
-    .audio-control i{pointer-events:none;font-size:1.4em;}
-    /* Corações flutuantes */
-    .hearts{
-      pointer-events:none;
-      position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      overflow:hidden;
-      z-index:2;
-    }
-    .hearts span{
-      position:absolute;
-      top:-10%;
-      font-size:clamp(16px, 2vw, 28px);
-      animation:fall linear infinite;
-    }
-    @keyframes fall{
-      0%{transform:translate3d(0,0,0) rotate(0deg);opacity:1;}
-      100%{transform:translate3d(var(--x,0px),110vh,0) rotate(360deg);opacity:0;}
+    @keyframes music-wave {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(300%); }
     }
   </style>
 </head>
-<body>
-  <div class="wrap">
-    <div class="card">
-      <div class="invite" aria-label="Convite interativo">
-        <!-- Foto superior do casal -->
-        <div class="invite-photo"></div>
-        <!-- Área de texto do convite -->
-        <div class="invite-details">
-          <!-- Nomes dos noivos (substitua conforme desejado) -->
-          <h1>Viviane</h1>
-          <h2>e Israel</h2>
-          <!-- Mensagem de convite -->
-          <p>Carinhosamente convidam para<br/>a cerimônia de seu casamento.</p>
-          <!-- Linha com data e horário -->
-          <div class="date-line">
-            23 de maio de 2026 &bull; 16h
+<body class="flex items-center justify-center p-4 md:p-8">
+
+  <!-- Canvas corações flutuantes -->
+  <canvas id="hearts-canvas"></canvas>
+
+  <div id="main-card" class="card">
+    <!-- Diptych -->
+    <div class="diptych">
+      <div class="photo-left">
+        <img src="1.png" alt="Viviane & Israel na praia">
+        <div class="caption">O amor que o mar abençoou</div>
+      </div>
+      <div class="divider"></div>
+      <div class="photo-right">
+        <img src="2.png" alt="Viviane & Israel – retrato formal">
+        <div class="caption">Para sempre começa aqui</div>
+      </div>
+    </div>
+
+    <!-- Conteúdo -->
+    <div class="px-8 pt-10 pb-12 text-center relative z-10">
+      <div class="names text-7xl leading-none mb-1">Viviane</div>
+      <div class="names text-7xl leading-none text-amber-300 -mt-4">Israel</div>
+
+      <p class="mt-8 text-xl text-amber-100/95 tracking-wide leading-relaxed">
+        Com o coração cheio de gratidão e amor,<br>
+        convidamos você para o dia mais lindo de nossas vidas.
+      </p>
+
+      <div class="mt-10 mb-1 text-4xl font-light text-amber-300">23 de maio de 2026 • 16h</div>
+      <div class="text-amber-100/80 text-lg">Chácara Recanto Mário • Jaceguava, SP</div>
+
+      <!-- Countdown -->
+      <div id="countdown" class="grid grid-cols-4 gap-4 mt-12 bg-black/40 rounded-3xl p-6"></div>
+
+      <!-- Música Player -->
+      <div class="mt-10 bg-black/30 rounded-2xl p-4 border border-amber-400/30">
+        <div onclick="toggleMusic()" id="music-player" 
+             class="flex items-center justify-between cursor-pointer hover:bg-white/10 transition-all px-4 py-3 rounded-xl">
+          <div class="flex items-center gap-3">
+            <i id="music-icon" class="fa-solid fa-music text-2xl text-amber-400"></i>
+            <div>
+              <div class="text-sm font-medium text-amber-100">Como É Grande o Meu Amor por Você</div>
+              <div class="text-xs text-amber-400/70">Toque automático • Viviane & Israel</div>
+            </div>
           </div>
-          <!-- Endereço ou local -->
-          <p>Chácara Recanto Mário<br/>Jaceguava, São Paulo - SP</p>
-          <!-- Botões de ação -->
-          <div class="actions">
-            <button class="action-btn" id="btnRsvp" aria-label="Confirmar presença">
-              <i class="fa-solid fa-calendar-check"></i>
-              Confirmar
-            </button>
-            <button class="action-btn" id="btnMaps" aria-label="Como chegar">
-              <i class="fa-solid fa-map-marked-alt"></i>
-              Chegar
-            </button>
-            <button class="action-btn" id="btnPix" aria-label="Chave Pix">
-              <i class="fa-solid fa-gift"></i>
-              Pix
-            </button>
-          </div>
+          <i id="play-pause-icon" class="fa-solid fa-pause text-2xl text-amber-400"></i>
         </div>
+        <div id="music-progress" class="music-bar mt-3 rounded-full"></div>
+      </div>
+
+      <!-- Ações -->
+      <div class="grid grid-cols-3 gap-4 mt-12">
+        <button onclick="openRSVP()" 
+                class="col-span-3 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-zinc-950 font-semibold py-7 rounded-3xl flex items-center justify-center gap-3 text-xl shadow-xl transition-all active:scale-95">
+          <i class="fa-solid fa-heart"></i> Confirmar Presença
+        </button>
+
+        <button onclick="openMaps()" 
+                class="bg-white/10 hover:bg-white/20 border border-white/30 py-6 rounded-3xl flex flex-col items-center gap-1.5 text-sm font-medium transition-all">
+          <i class="fa-solid fa-map text-2xl"></i>
+          <span>Como Chegar</span>
+        </button>
+
+        <button onclick="openPix()" 
+                class="bg-white/10 hover:bg-white/20 border border-white/30 py-6 rounded-3xl flex flex-col items-center gap-1.5 text-sm font-medium transition-all">
+          <i class="fa-solid fa-gift text-2xl"></i>
+          <span>Pix</span>
+        </button>
       </div>
     </div>
   </div>
-  <!-- Container de corações -->
-  <div class="hearts"></div>
-  <!-- Toast para mensagens breves -->
-  <div class="toast" id="toast"></div>
-  <!-- Áudio de fundo (mesmo nome do exemplo fornecido) -->
-  <iframe src="como_e_grande.mp3" allow="autoplay" style="display:none"></iframe>
-  <audio id="loveSong" preload="auto" autoplay>
+
+  <!-- ÁUDIO LOCAL – AUTOPLAY -->
+  <audio id="wedding-song" loop autoplay>
     <source src="como_e_grande.mp3" type="audio/mpeg">
-    Seu navegador não suporta reprodução de áudio.
   </audio>
-  <!-- Botão flutuante de play/pause da música -->
-  <button id="btnPlayPause" class="audio-control" aria-label="Tocar música">
-    <i class="fa-solid fa-play"></i>
-  </button>
-  <!-- Modal de RSVP -->
-  <section class="modal" id="modalRsvp" aria-hidden="true">
-    <div class="sheet" role="dialog" aria-modal="true" aria-label="Confirmar presença">
-      <div class="head">
-        <div class="title"><strong>✅ Confirmar presença</strong><span>Mensagem via WhatsApp</span></div>
-        <button class="close" id="closeRsvp" type="button">Fechar</button>
-      </div>
-      <div class="body">
-        <p class="note">Preencha e toque em <strong>Enviar no WhatsApp</strong>.</p>
-        <form id="formRsvp" class="grid">
-          <div>
-            <label for="nome">Seu nome</label>
-            <input id="nome" required placeholder="Ex.: Maria Silva" />
-          </div>
-          <div class="row">
-            <div>
-              <label for="qtd">Quantidade de pessoas</label>
-              <select id="qtd" required>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5+">5+</option>
-              </select>
-            </div>
-            <div>
-              <label for="status">Confirmar?</label>
-              <select id="status" required>
-                <option value="confirmamos nossa presença">Sim, vamos! ❤️</option>
-                <option value="infelizmente não podemos comparecer">Não poderemos 😢</option>
-              </select>
-            </div>
-          </div>
-          <button class="primary" type="submit">Enviar no WhatsApp</button>
-        </form>
-      </div>
-    </div>
-  </section>
-  <!-- Modal Pix -->
-  <section class="modal" id="modalPix" aria-hidden="true">
-    <div class="sheet" role="dialog" aria-modal="true" aria-label="Chave Pix">
-      <div class="head">
-        <div class="title"><strong>💖 Chave Pix</strong><span>Qualquer valor é bem-vindo</span></div>
-        <button class="close" id="closePix" type="button">Fechar</button>
-      </div>
-      <div class="body">
-        <p class="note">A chave Pix abaixo está copiada em seu dispositivo.</p>
-        <div class="pixbox">
-          <span class="pixkey" id="pixKey"></span>
-          <button class="copy" id="copyPix">Copiar</button>
+
+  <!-- Toast -->
+  <div id="toast" class="hidden fixed bottom-8 left-1/2 -translate-x-1/2 bg-zinc-900 border border-amber-400/80 px-8 py-4 rounded-3xl text-amber-100 text-sm font-medium flex items-center gap-3 shadow-2xl z-50">
+    <span id="toast-text"></span>
+  </div>
+
+  <!-- Modais -->
+  <div id="modal-rsvp" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
+    <div class="bg-zinc-950 border border-amber-400/40 rounded-3xl max-w-md w-full p-8 relative">
+      <button onclick="closeModal('rsvp')" class="absolute top-6 right-6 text-4xl text-amber-400">×</button>
+      <h2 class="names text-4xl text-center mb-8">Confirmar presença</h2>
+      <form id="rsvp-form" class="space-y-6">
+        <input id="nome" type="text" placeholder="Seu nome completo" required class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5 text-lg">
+        <div class="grid grid-cols-2 gap-4">
+          <select id="qtd" class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5">
+            <option value="1">1 pessoa</option>
+            <option value="2" selected>2 pessoas</option>
+            <option value="3">3 pessoas</option>
+            <option value="4">4 pessoas</option>
+          </select>
+          <select id="status" class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5">
+            <option value="Confirmo com alegria!">Confirmo com alegria!</option>
+            <option value="Infelizmente não poderei">Não poderei ir</option>
+          </select>
         </div>
-      </div>
+        <button type="submit" class="w-full py-7 bg-gradient-to-r from-amber-400 to-amber-500 text-zinc-950 font-bold text-xl rounded-3xl">Enviar no WhatsApp</button>
+      </form>
     </div>
-  </section>
+  </div>
+
+  <div id="modal-pix" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
+    <div class="bg-zinc-950 border border-amber-400/40 rounded-3xl max-w-md w-full p-8 text-center relative">
+      <button onclick="closeModal('pix')" class="absolute top-6 right-6 text-4xl text-amber-400">×</button>
+      <i class="fa-solid fa-gift text-7xl text-amber-400 mb-6"></i>
+      <div class="font-mono text-3xl text-amber-300 mb-8" id="pix-key">11955518944</div>
+      <button onclick="copyPix()" class="w-full py-6 border border-amber-400 rounded-3xl font-semibold">Copiar chave Pix</button>
+    </div>
+  </div>
+
   <script>
-    // Configurações editáveis: substitua pelos seus dados
-    var PIX_KEY = "11955518944";
-    var WHATS_NUMBER = "5511977524596"; // número de WhatsApp sem +
-    var DESTINO = "Chácara Recanto Mário, Jaceguava, São Paulo - SP";
+    const PIX_KEY = "11955518944";
+    const WHATS_NUMBER = "5511977524596";
+    const LOCAL = "Chácara Recanto Mário, Jaceguava, São Paulo - SP";
+    const WEDDING_DATE = new Date("2026-05-23T16:00:00-03:00");
+    const audio = document.getElementById('wedding-song');
+    let isPlaying = true;
 
-    function byId(id){ return document.getElementById(id); }
-    function showToast(msg){
-      var el = byId("toast");
-      el.textContent = msg;
-      el.classList.add("show");
-      setTimeout(function(){ el.classList.remove("show"); }, 2200);
-    }
-    function openModal(id){
-      var m = byId(id);
-      m.classList.add("open");
-      m.setAttribute("aria-hidden","false");
-    }
-    function closeModal(id){
-      var m = byId(id);
-      m.classList.remove("open");
-      m.setAttribute("aria-hidden","true");
-    }
-    function mapsLink(){
-      var dest = encodeURIComponent(DESTINO);
-      return "https://www.google.com/maps/dir/?api=1&destination=" + dest + "&travelmode=driving";
-    }
-    function waLink(message){
-      var text = encodeURIComponent(message);
-      return "https://wa.me/" + WHATS_NUMBER + "?text=" + text;
-    }
-    // Ações para os botões da carta
-    byId("btnRsvp").addEventListener("click", function(){ openModal("modalRsvp"); });
-    byId("btnMaps").addEventListener("click", function(){ window.open(mapsLink(), "_blank", "noopener"); });
-    byId("btnPix").addEventListener("click", function(){ openModal("modalPix"); });
-    // Botões de fechar
-    byId("closeRsvp").addEventListener("click", function(){ closeModal("modalRsvp"); });
-    byId("closePix").addEventListener("click", function(){ closeModal("modalPix"); });
-    // Clicar fora fecha modal
-    byId("modalRsvp").addEventListener("click", function(e){ if(e.target.id === "modalRsvp") closeModal("modalRsvp"); });
-    byId("modalPix").addEventListener("click", function(e){ if(e.target.id === "modalPix") closeModal("modalPix"); });
-    // Copiar chave Pix
-    async function copiarPix(){
-      try{
-        await navigator.clipboard.writeText(PIX_KEY);
-        showToast("Chave Pix copiada ✅");
-      }catch(e){
-        var t = document.createElement("textarea");
-        t.value = PIX_KEY;
-        document.body.appendChild(t);
-        t.select();
-        document.execCommand("copy");
-        document.body.removeChild(t);
-        showToast("Chave Pix copiada ✅");
+    // Canvas corações flutuantes
+    const canvas = document.getElementById('hearts-canvas');
+    const ctx = canvas.getContext('2d');
+    let hearts = [];
+    class Heart {
+      constructor() {
+        this.x = Math.random() * window.innerWidth;
+        this.y = window.innerHeight + Math.random() * 100;
+        this.size = Math.random() * 22 + 14;
+        this.speed = Math.random() * 1.2 + 0.6;
+        this.opacity = Math.random() * 0.6 + 0.4;
+        this.angle = Math.random() * Math.PI * 2;
+      }
+      update() {
+        this.y -= this.speed;
+        this.angle += 0.02;
+        this.x += Math.sin(this.angle) * 1.2;
+        if (this.y < -50) this.y = window.innerHeight + 50;
+      }
+      draw() {
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = '#d4af37';
+        ctx.font = `${this.size}px Arial`;
+        ctx.fillText('♡', this.x, this.y);
       }
     }
-    byId("copyPix").addEventListener("click", copiarPix);
-    byId("pixKey").textContent = PIX_KEY;
-    // Enviar RSVP via WhatsApp
-    byId("formRsvp").addEventListener("submit", function(e){
+    function initHearts() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      hearts = [];
+      for (let i = 0; i < 45; i++) hearts.push(new Heart());
+    }
+    function animateHearts() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hearts.forEach(h => { h.update(); h.draw(); });
+      requestAnimationFrame(animateHearts);
+    }
+
+    // Tilt 3D
+    const card = document.getElementById('main-card');
+    function applyTilt(e) {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width / 2) / 22;
+      const y = (e.clientY - rect.top - rect.height / 2) / 22;
+      card.style.transform = `perspective(1400px) rotateX(${-y}deg) rotateY(${x}deg)`;
+    }
+    document.addEventListener('mousemove', applyTilt);
+    document.addEventListener('mouseleave', () => card.style.transform = 'perspective(1400px) rotateX(0deg) rotateY(0deg)');
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toast-text').innerHTML = msg;
+      t.classList.remove('hidden');
+      setTimeout(() => t.classList.add('hidden'), 3800);
+    }
+
+    function updateCountdown() {
+      const diff = WEDDING_DATE - new Date();
+      if (diff < 0) return;
+      const d = Math.floor(diff / 86400000);
+      const h = Math.floor((diff % 86400000) / 3600000);
+      const m = Math.floor((diff % 3600000) / 60000);
+      const s = Math.floor((diff % 60000) / 1000);
+      document.getElementById('countdown').innerHTML = `
+        <div class="text-center"><div class="text-5xl font-bold text-amber-300">${d}</div><div class="text-xs tracking-widest text-amber-100/60">DIAS</div></div>
+        <div class="text-center"><div class="text-5xl font-bold text-amber-300">${h}</div><div class="text-xs tracking-widest text-amber-100/60">HORAS</div></div>
+        <div class="text-center"><div class="text-5xl font-bold text-amber-300">${m}</div><div class="text-xs tracking-widest text-amber-100/60">MIN</div></div>
+        <div class="text-center"><div class="text-5xl font-bold text-amber-300">${s}</div><div class="text-xs tracking-widest text-amber-100/60">SEG</div></div>
+      `;
+    }
+
+    function toggleMusic() {
+      const icon = document.getElementById('play-pause-icon');
+      if (isPlaying) {
+        audio.pause();
+        icon.classList.replace('fa-pause', 'fa-play');
+      } else {
+        audio.play();
+        icon.classList.replace('fa-play', 'fa-pause');
+      }
+      isPlaying = !isPlaying;
+    }
+
+    function openRSVP() { document.getElementById('modal-rsvp').classList.remove('hidden'); }
+    function openPix() { document.getElementById('modal-pix').classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
+
+    function openMaps() {
+      window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(LOCAL)}`, '_blank');
+    }
+
+    async function copyPix() {
+      await navigator.clipboard.writeText(PIX_KEY);
+      showToast('✅ Chave Pix copiada!');
+    }
+
+    document.getElementById('rsvp-form').addEventListener('submit', function(e) {
       e.preventDefault();
-      var nome = byId("nome").value.trim();
-      var qtd = byId("qtd").value;
-      var status = byId("status").value;
-      var msg = "Olá! " + status + ".\n\nNome: " + nome + "\nQuantidade de pessoas: " + qtd + "\n\nEndereço: " + DESTINO + "\nObrigado(a)!";
-      window.open(waLink(msg), "_blank", "noopener");
-      closeModal("modalRsvp");
-      launchConfetti();
-      playLoveSong();
+      const nome = document.getElementById('nome').value.trim();
+      const qtd = document.getElementById('qtd').value;
+      const status = document.getElementById('status').value;
+      const msg = `Olá! ${status}\nNome: ${nome}\nQuantidade: ${qtd} pessoas\nLocal: ${LOCAL}`;
+      window.open(`https://wa.me/${WHATS_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+      closeModal('rsvp');
+      confetti({ particleCount: 280, spread: 100, origin: { y: 0.6 } });
+      showToast('💛 Obrigado! Mal podemos esperar para te ver!');
     });
-    // Gerar corações flutuantes
-    function createHearts() {
-      var container = document.querySelector('.hearts');
-      if (!container) return;
-      var total = 30;
-      var colours = ['#ffb3c6', '#ffc6e1', '#e8dff5', '#d5f4e6', '#f9ec99'];
-      for (var i = 0; i < total; i++) {
-        var span = document.createElement('span');
-        var pos = Math.random() * 100;
-        span.style.left = pos + '%';
-        var drift = (Math.random() * 200 - 100).toFixed(0) + 'px';
-        span.style.setProperty('--x', drift);
-        var delay = (Math.random() * 5).toFixed(2) + 's';
-        var duration = (5 + Math.random() * 8).toFixed(2) + 's';
-        span.style.animationDelay = delay;
-        span.style.animationDuration = duration;
-        span.style.color = colours[Math.floor(Math.random() * colours.length)];
-        span.style.opacity = 0.6;
-        span.innerHTML = '<i class="fa-solid fa-heart"></i>';
-        container.appendChild(span);
-      }
-    }
-    // Tocar música
-    function playLoveSong() {
-      var song = document.getElementById('loveSong');
-      if (song) {
-        try{ song.play(); } catch(e){ console.warn('Audio playback failed', e); }
-      }
-    }
-    // Confetes comemorativos
-    function launchConfetti() {
-      if (typeof confetti === 'function') {
-        confetti({ particleCount: 150, spread: 120, startVelocity: 40, origin: { y: 0.6 } });
-      }
-    }
 
-    // Alternar automaticamente a foto de capa (slideshow)
-    // Obtém as imagens de fundo da foto principal e da foto decorativa e alterna
-    function setupSlideshow() {
-      var invitePhoto = document.querySelector('.invite-photo');
-      var decorativePhoto = document.querySelector('.decorative-photo');
-      if (invitePhoto && decorativePhoto) {
-        var mainBg = window.getComputedStyle(invitePhoto).backgroundImage;
-        var decoBg = window.getComputedStyle(decorativePhoto).backgroundImage;
-        // garantir que a foto decorativa permaneça oculta
-        decorativePhoto.style.display = 'none';
-        var images = [mainBg, decoBg];
-        var index = 0;
-        setInterval(function () {
-          index = (index + 1) % images.length;
-          invitePhoto.style.backgroundImage = images[index];
-        }, 6000);
-      }
-    }
-    // Reagir à carga da página
-    window.addEventListener('load', function(){
-      createHearts();
-      launchConfetti();
-      setupSlideshow();
-    });
-    // Play/pause do áudio
-    (function(){
-      var playPauseBtn = document.getElementById('btnPlayPause');
-      var song = document.getElementById('loveSong');
-      var isPlaying = false;
-      if (playPauseBtn && song) {
-        var playPromise = song.play();
-        if (playPromise !== undefined) {
-          playPromise.then(function(){ isPlaying = true; playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; })
-          .catch(function(error){ /* autoplay bloqueado: ícone permanece de play */ });
-        }
-        playPauseBtn.addEventListener('click', function(){
-          if (isPlaying) {
-            song.pause();
-            isPlaying = false;
-            playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-          } else {
-            song.play();
-            isPlaying = true;
-            playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-          }
-        });
-        song.addEventListener('ended', function(){ isPlaying = false; playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; });
-      }
-    })();
+    // Inicialização ABSOLUTA
+    window.onload = () => {
+      initHearts();
+      animateHearts();
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+
+      // AUTOPLAY DA MÚSICA
+      audio.volume = 0.75;
+      audio.play().then(() => {
+        showToast('🎵 Nossa música está tocando...');
+      }).catch(() => {
+        showToast('🎵 Clique em <b>Nossa Música</b> para ouvir');
+        document.getElementById('play-pause-icon').classList.replace('fa-pause', 'fa-play');
+        isPlaying = false;
+      });
+
+      // Boas-vindas
+      setTimeout(() => showToast('Bem-vindo(a) ao nosso convite de amor ✨'), 1200);
+
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+    };
   </script>
 </body>
 </html>

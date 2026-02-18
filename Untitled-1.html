@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Viviane & Israel • 23 de Maio de 2026</title>
+  <!-- Google Fonts - Playfair Display (mais elegante e moderno) + Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&amp;family=Poppins:wght@300;400;500;600&amp;display=swap');
+
+    :root {
+      --gold: #d4af37;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', system_ui, sans-serif;
+      background: url('169e6766-aaf5-40d2-8890-eaad23bc6477.png') no-repeat center center fixed;
+      background-size: cover;
+      color: #fefefe;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Glassmorphism premium */
+    .invitation-card {
+      background: rgba(10, 10, 10, 0.68);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75);
+      border-radius: 28px;
+      overflow: hidden;
+      max-width: 480px;
+      width: 100%;
+    }
+
+    /* Slider moderno com fade + overlay gradient */
+    .photo-slider {
+      position: relative;
+      height: 380px;
+      overflow: hidden;
+    }
+
+    .photo-slider img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1200ms cubic-bezier(0.4, 0, 0.2, 1);
+      filter: brightness(0.92);
+    }
+
+    .photo-slider img.show {
+      opacity: 1;
+    }
+
+    .photo-slider::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(10,10,10,0.75) 92%);
+      z-index: 1;
+    }
+
+    /* Nomes em Playfair Display com glow dourado */
+    .names {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      letter-spacing: -2px;
+    }
+
+    .gold-gradient {
+      background: linear-gradient(90deg, #d4af37, #f5e8b3, #d4af37);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Countdown */
+    .countdown-box {
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    /* Botões com hover glow */
+    .action-btn {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .action-btn:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+    }
+
+    /* Toast moderno */
+    .toast {
+      animation: toastPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes toastPop {
+      0% { transform: translate(-50%, 30px); opacity: 0; }
+      100% { transform: translate(-50%, 0); opacity: 1; }
+    }
+
+    /* Modal com scale + blur */
+    .modal {
+      animation: modalFade 0.3s ease forwards;
+    }
+    @keyframes modalFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .modal-sheet {
+      animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes modalPop {
+      0% { transform: scale(0.85); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="invitation-card">
+    <!-- Photo Slider -->
+    <div class="photo-slider" id="slider">
+      <img src="1.png" alt="Viviane &amp; Israel" class="show">
+      <img src="2.png" alt="Viviane &amp; Israel">
+      <!-- Indicadores -->
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+        <button onclick="goToSlide(0)" class="slider-dot w-3 h-3 rounded-full bg-white/70 transition-all hover:bg-white" id="dot-0"></button>
+        <button onclick="goToSlide(1)" class="slider-dot w-3 h-3 rounded-full bg-white/30 transition-all hover:bg-white" id="dot-1"></button>
+      </div>
+    </div>
+
+    <!-- Conteúdo -->
+    <div class="px-8 pt-9 pb-10 text-center">
+      <!-- Nomes -->
+      <div class="names text-6xl md:text-7xl tracking-tighter gold-gradient mb-1">Viviane</div>
+      <div class="names text-6xl md:text-7xl tracking-tighter text-amber-300 mb-6">Israel</div>
+
+      <!-- Texto de convite -->
+      <p class="text-lg text-amber-100/90 font-light tracking-wide mb-8">
+        Com imensa alegria convidamos você<br>
+        para celebrar nosso casamento
+      </p>
+
+      <!-- Data -->
+      <div class="text-amber-300 text-2xl font-medium mb-1">23 de maio de 2026</div>
+      <div class="text-amber-100/80 text-base">16h • Sábado</div>
+
+      <!-- Countdown -->
+      <div id="countdown" class="grid grid-cols-4 gap-3 mt-9 countdown-box rounded-2xl p-5">
+        <!-- JS preenche -->
+      </div>
+
+      <!-- Local -->
+      <div class="mt-9 mb-10">
+        <div class="flex items-center justify-center gap-2 text-amber-100/80 text-sm mb-1">
+          <i class="fa-solid fa-location-dot"></i>
+          <span class="uppercase tracking-widest text-xs">Local</span>
+        </div>
+        <p class="text-amber-100 font-medium leading-tight">
+          Chácara Recanto Mário<br>
+          Jaceguava, São Paulo - SP
+        </p>
+      </div>
+
+      <!-- Ações -->
+      <div class="grid grid-cols-3 gap-4">
+        <button onclick="openModal('rsvp')" 
+                class="action-btn col-span-1 bg-gradient-to-b from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-zinc-950 font-semibold py-5 rounded-2xl flex flex-col items-center gap-1 shadow-lg">
+          <i class="fa-solid fa-heart text-xl"></i>
+          <span class="text-xs tracking-wider">Confirmar</span>
+        </button>
+
+        <button onclick="openMaps()" 
+                class="action-btn col-span-1 bg-white/10 hover:bg-white/20 border border-white/30 font-semibold py-5 rounded-2xl flex flex-col items-center gap-1 backdrop-blur">
+          <i class="fa-solid fa-map text-xl"></i>
+          <span class="text-xs tracking-wider">Como chegar</span>
+        </button>
+
+        <button onclick="openModal('pix')" 
+                class="action-btn col-span-1 bg-white/10 hover:bg-white/20 border border-white/30 font-semibold py-5 rounded-2xl flex flex-col items-center gap-1 backdrop-blur">
+          <i class="fa-solid fa-gift text-xl"></i>
+          <span class="text-xs tracking-wider">Presente Pix</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-zinc-900 border border-amber-400 text-amber-100 px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-medium">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="toast-text"></span>
+  </div>
+
+  <!-- Modal RSVP -->
+  <div id="modal-rsvp" class="modal fixed inset-0 bg-black/80 hidden flex items-center justify-center z-50 px-4">
+    <div class="modal-sheet bg-zinc-950 border border-amber-400/30 rounded-3xl w-full max-w-md p-8 relative">
+      <button onclick="closeModal('rsvp')" class="absolute top-5 right-5 text-3xl text-amber-400 hover:text-white transition-colors">×</button>
+      
+      <h2 class="text-3xl font-semibold text-center mb-8 gold-gradient">Confirmar presença</h2>
+      
+      <form id="form-rsvp" class="space-y-6">
+        <div>
+          <label class="block text-amber-100/80 text-sm mb-2">Seu nome completo</label>
+          <input type="text" id="nome" required placeholder="Ex: João Silva" 
+                 class="w-full bg-zinc-900 border border-amber-400/30 focus:border-amber-400 rounded-2xl px-5 py-4 outline-none text-white placeholder:text-amber-100/40">
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-amber-100/80 text-sm mb-2">Quantidade</label>
+            <select id="qtd" class="w-full bg-zinc-900 border border-amber-400/30 focus:border-amber-400 rounded-2xl px-5 py-4 outline-none text-white">
+              <option value="1">1 pessoa</option>
+              <option value="2">2 pessoas</option>
+              <option value="3">3 pessoas</option>
+              <option value="4">4 pessoas</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-amber-100/80 text-sm mb-2">Confirmação</label>
+            <select id="status" class="w-full bg-zinc-900 border border-amber-400/30 focus:border-amber-400 rounded-2xl px-5 py-4 outline-none text-white">
+              <option value="Sim, estarei lá! 💛">Sim, estarei lá! 💛</option>
+              <option value="Infelizmente não poderei comparecer.">Infelizmente não poderei</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit"
+                class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-zinc-950 font-semibold py-5 rounded-2xl text-lg transition-all active:scale-95">
+          Enviar pelo WhatsApp
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal PIX -->
+  <div id="modal-pix" class="modal fixed inset-0 bg-black/80 hidden flex items-center justify-center z-50 px-4">
+    <div class="modal-sheet bg-zinc-950 border border-amber-400/30 rounded-3xl w-full max-w-md p-8 relative">
+      <button onclick="closeModal('pix')" class="absolute top-5 right-5 text-3xl text-amber-400 hover:text-white transition-colors">×</button>
+      
+      <div class="text-center mb-8">
+        <i class="fa-solid fa-gift text-6xl text-amber-400 mb-4"></i>
+        <h2 class="text-3xl font-semibold gold-gradient">Lista de presentes</h2>
+        <p class="text-amber-100/70 mt-2">Sua presença já é o maior presente,<br>mas se quiser contribuir:</p>
+      </div>
+
+      <div class="bg-zinc-900/70 border border-amber-400/30 rounded-2xl p-6 text-center">
+        <div class="text-amber-100/60 text-xs tracking-widest mb-2">CHAVE PIX</div>
+        <div id="pix-key" class="font-mono text-2xl font-semibold text-amber-300 break-all">11955518944</div>
+      </div>
+
+      <button onclick="copyPix()" 
+              class="mt-6 w-full bg-white/10 hover:bg-white/20 border border-amber-400/30 font-semibold py-5 rounded-2xl flex items-center justify-center gap-3 transition-all">
+        <i class="fa-solid fa-copy"></i>
+        Copiar chave Pix
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Tailwind config
+    function initTailwind() {
+      // Já está no CDN, mas podemos ajustar
+    }
+
+    // Configurações
+    const PIX_KEY = "11955518944";
+    const WHATS_NUMBER = "5511977524596";
+    const LOCAL = "Chácara Recanto Mário, Jaceguava, São Paulo - SP";
+    const WEDDING_DATE = new Date("2026-05-23T16:00:00-03:00");
+
+    // Elementos
+    const toast = document.getElementById("toast");
+    const toastText = document.getElementById("toast-text");
+
+    function showToast(message) {
+      toastText.textContent = message;
+      toast.classList.remove("hidden");
+      toast.style.transform = "translate(-50%, 0)";
+      setTimeout(() => {
+        toast.style.transform = "translate(-50%, 80px)";
+        setTimeout(() => toast.classList.add("hidden"), 400);
+      }, 2800);
+    }
+
+    // Slider
+    let currentSlide = 0;
+    const slides = document.querySelectorAll("#slider img");
+    const dots = document.querySelectorAll(".slider-dot");
+
+    function showSlide(n) {
+      slides.forEach((s, i) => {
+        s.classList.toggle("show", i === n);
+      });
+      dots.forEach((d, i) => {
+        d.classList.toggle("bg-white/70", i === n);
+        d.classList.toggle("bg-white/30", i !== n);
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function goToSlide(n) {
+      currentSlide = n;
+      showSlide(n);
+    }
+
+    // Countdown
+    function updateCountdown() {
+      const now = new Date();
+      let diff = WEDDING_DATE - now;
+
+      if (diff <= 0) {
+        document.getElementById("countdown").innerHTML = `
+          <div class="text-center">
+            <div class="text-4xl font-bold text-amber-300">HOJE!</div>
+          </div>
+        `;
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      diff -= days * (1000 * 60 * 60 * 24);
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      diff -= hours * (1000 * 60 * 60);
+      const minutes = Math.floor(diff / (1000 * 60));
+
+      document.getElementById("countdown").innerHTML = `
+        <div class="text-center">
+          <div class="text-4xl font-bold text-amber-300">${days}</div>
+          <div class="text-xs text-amber-100/60 tracking-widest">DIAS</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-bold text-amber-300">${hours}</div>
+          <div class="text-xs text-amber-100/60 tracking-widest">HORAS</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-bold text-amber-300">${minutes}</div>
+          <div class="text-xs text-amber-100/60 tracking-widest">MIN</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-bold text-amber-300">00</div>
+          <div class="text-xs text-amber-100/60 tracking-widest">SEG</div>
+        </div>
+      `;
+    }
+
+    // Modals
+    function openModal(id) {
+      document.getElementById(modal-${id}).classList.remove("hidden");
+      document.getElementById(modal-${id}).classList.add("flex");
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(modal-${id});
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    // Maps
+    function openMaps() {
+      const url = https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(LOCAL)}&travelmode=driving;
+      window.open(url, "_blank");
+    }
+
+    // Copy Pix
+    async function copyPix() {
+      try {
+        await navigator.clipboard.writeText(PIX_KEY);
+        showToast("✅ Chave Pix copiada!");
+      } catch (e) {
+        const ta = document.createElement("textarea");
+        ta.value = PIX_KEY;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        showToast("✅ Chave Pix copiada!");
+      }
+    }
+
+    // RSVP Form
+    document.getElementById("form-rsvp").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const nome = document.getElementById("nome").value.trim();
+      const qtd = document.getElementById("qtd").value;
+      const status = document.getElementById("status").value;
+
+      const message = Olá! ${status}\n\nNome: ${nome}\nQuantidade: ${qtd} pessoas\nLocal: ${LOCAL}\n\nMuito obrigado(a)! 💛;
+
+      const waUrl = https://wa.me/${WHATS_NUMBER}?text=${encodeURIComponent(message)};
+      window.open(waUrl, "_blank");
+
+      closeModal("rsvp");
+      showToast("Mensagem aberta no WhatsApp 💌");
+    });
+
+    // Inicialização
+    window.onload = function() {
+      // Slider
+      showSlide(0);
+      setInterval(nextSlide, 6500);
+
+      // Countdown
+      updateCountdown();
+      setInterval(updateCountdown, 60000);
+
+      // Fecha modal clicando fora
+      document.querySelectorAll(".modal").forEach(modal => {
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) closeModal(modal.id.replace("modal-", ""));
+        });
+      });
+
+      // Tecla ESC
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          document.querySelectorAll(".modal").forEach(m => {
+            if (!m.classList.contains("hidden")) {
+              const id = m.id.replace("modal-", "");
+              closeModal(id);
+            }
+          });
+        }
+      });
+
+      showToast("Bem-vindo(a) ao nosso convite ✨");
+    };
+  </script>
+</body>
+</html>
