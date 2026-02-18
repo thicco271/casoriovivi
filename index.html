@@ -14,7 +14,7 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: #0a0a0a; /* Fundo preto puro */
+      background: #0a0a0a;
       color: #fefefe;
       min-height: 100vh;
       overflow-x: hidden;
@@ -30,9 +30,9 @@
     }
 
     .card {
-      background: #111111; /* Preto mais escuro e limpo */
+      background: #111111;
       backdrop-filter: blur(32px);
-      border: 2px solid #6B7F4A; /* Borda oliva */
+      border: 2px solid #6B7F4A;
       box-shadow: 0 40px 100px rgba(0,0,0,0.95);
       border-radius: 36px;
       max-width: 520px;
@@ -97,11 +97,25 @@
       50% { transform: translate(-50%, -50%) scale(1.25); } 
     }
 
-    /* Contraste forte para celular */
+    .viviane {
+      font-family: 'Playfair Display', serif;
+      letter-spacing: -3px;
+      background: linear-gradient(90deg, #ffffff, #c2ceb6, #ffffff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer-sweep 5s linear infinite;
+      text-shadow: 
+        0 0 35px #ffffff,
+        0 0 60px #c2ceb6,
+        4px 4px 12px #000,
+        -3px -3px 10px rgba(255,255,255,0.7);
+    }
+
     .names {
       font-family: 'Playfair Display', serif;
       letter-spacing: -3px;
-      background: linear-gradient(90deg, #8A9A5B, #ffffff, #8A9A5B);
+      background: linear-gradient(90deg, #8A9A5B, #c2ceb6, #8A9A5B);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -112,6 +126,17 @@
         -3px -3px 10px rgba(255,255,255,0.4);
     }
     @keyframes shimmer-sweep { 0%,100% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+
+    /* DATA E HORÁRIO MAIS BRILHANTE */
+    .date-line {
+      font-family: 'Playfair Display', serif;
+      font-weight: 500;
+      color: #ffffff;
+      text-shadow: 
+        0 0 25px #000,
+        0 0 40px #8A9A5B,
+        3px 3px 10px #000;
+    }
 
     .btn-main {
       background: linear-gradient(to right, #6B7F4A, #8A9A5B);
@@ -163,7 +188,7 @@
     </div>
 
     <div class="px-6 pt-6 pb-8 text-center md:px-8 md:pt-10 md:pb-12">
-      <div class="names text-6xl md:text-7xl leading-none mb-1">Viviane</div>
+      <div class="viviane text-6xl md:text-7xl leading-none mb-1">Viviane</div>
       <div class="text-4xl md:text-5xl text-[#8A9A5B] my-1 font-light">e</div>
       <div class="names text-6xl md:text-7xl leading-none text-[#8A9A5B] -mt-3">Israel</div>
 
@@ -172,7 +197,8 @@
         convidamos você para o dia mais lindo de nossas vidas.
       </p>
 
-      <div class="mt-6 text-3xl md:text-4xl font-light text-[#8A9A5B]">23 de maio de 2026 • 16h</div>
+      <!-- DATA E HORÁRIO MAIS BRILHANTE -->
+      <div class="date-line mt-6 text-3xl md:text-4xl">23 de maio de 2026 • 16h</div>
       <div class="text-[#c2ceb6] text-base md:text-lg">Av. Jaceguava, 3005 - Balneário São José, São Paulo - SP, 04870-425</div>
 
       <div id="countdown" class="grid grid-cols-4 gap-3 md:gap-4 mt-8 md:mt-12 bg-black/40 rounded-3xl p-5 md:p-6"></div>
@@ -285,7 +311,7 @@
         this.angle = Math.random() * Math.PI * 2;
         this.angleSpeed = (Math.random() - 0.5) * 0.04;
         this.type = Math.random() > 0.65 ? 'heart' : (Math.random() > 0.5 ? 'sparkle' : 'dot');
-        this.hue = Math.random() > 0.8 ? 85 : 95; /* tons oliva */
+        this.hue = Math.random() > 0.8 ? 85 : 95;
       }
       update() {
         this.y -= this.speed;
