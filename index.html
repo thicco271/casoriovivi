@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Viviane & Israel | Casamento 23.05.2026</title>
   
-  <!-- Favicon noiva (bonitinho) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='38' r='14' fill='%23d4af37'/%3E%3Cpath d='M36 48 Q50 78 64 48' fill='none' stroke='%23d4af37' stroke-width='12' stroke-linecap='round'/%3E%3Cpath d='M28 82 Q50 95 72 82' fill='%23d4af37'/%3E%3Ccircle cx='50' cy='32' r='6' fill='%23fff'/%3E%3C/svg%3E">
-
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -45,33 +42,15 @@
       position: relative;
     }
 
-    /* BORDA PARADA - Verde Oliva elegante + Dourado (sem animação) */
     .card::before {
       content: '';
       position: absolute;
       inset: -3px;
       border-radius: 39px;
-      background: linear-gradient(135deg, #d4af37, #e0c98a, #5a6b42);
+      background: linear-gradient(135deg, #d4af37, #e0c98a, #6B7F4A);
       z-index: -1;
       filter: blur(1px);
     }
-
-    /* Divine Light Rays */
-    .card::after {
-      content: '';
-      position: absolute;
-      top: -120px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 320px;
-      height: 220px;
-      background: linear-gradient(transparent, rgba(212,175,55,0.28), transparent);
-      filter: blur(45px);
-      animation: divine-rays 22s linear infinite;
-      z-index: -1;
-      opacity: 0.65;
-    }
-    @keyframes divine-rays { 0% { transform: translateX(-50%) rotate(0deg); } 100% { transform: translateX(-50%) rotate(360deg); } }
 
     .diptych { display: grid; grid-template-columns: 1fr 5px 1fr; height: 440px; position: relative; }
     .photo-left, .photo-right { position: relative; overflow: hidden; }
@@ -83,10 +62,6 @@
       transform: scale(1.18);
       filter: brightness(1.15) contrast(1.08);
     }
-    .photo-left:hover::after, .photo-right:hover::after {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at center, rgba(212,175,55,0.45), transparent 70%);
-    }
 
     .caption {
       position: absolute; bottom: 38px; left: 0; right: 0; text-align: center;
@@ -94,12 +69,31 @@
       color: #fff; text-shadow: 0 4px 20px rgba(0,0,0,0.95);
     }
 
-    .divider { background: linear-gradient(#d4af37, #556b2f, #d4af37); width: 5px; box-shadow: 0 0 25px #d4af37; }
-    .divider::before {
-      content: '♡'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      font-size: 52px; color: #d4af37; animation: pulse-heart 3s infinite ease-in-out;
+    /* Coração corrigido - agora totalmente visível e sobreposto */
+    .divider { 
+      background: linear-gradient(#d4af37, #556b2f, #d4af37); 
+      width: 5px; 
+      box-shadow: 0 0 25px #d4af37; 
+      position: relative; 
     }
-    @keyframes pulse-heart { 0%,100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.32); } }
+    .divider::before {
+      content: '♡';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 68px;
+      color: #f5e8b3;
+      text-shadow: 
+        0 0 15px #d4af37,
+        0 0 30px rgba(212,175,55,0.8);
+      z-index: 2;
+      animation: pulse-heart 3s infinite ease-in-out;
+    }
+    @keyframes pulse-heart { 
+      0%,100% { transform: translate(-50%, -50%) scale(1); } 
+      50% { transform: translate(-50%, -50%) scale(1.25); } 
+    }
 
     .names {
       font-family: 'Playfair Display', serif;
@@ -109,10 +103,7 @@
       background-clip: text;
       color: transparent;
       animation: shimmer-sweep 7s linear infinite;
-      text-shadow: 
-        4px 4px 12px rgba(0,0,0,0.9),
-        -3px -3px 10px rgba(255,255,255,0.4),
-        0 0 35px rgba(212,175,55,0.7);
+      text-shadow: 4px 4px 12px rgba(0,0,0,0.9), -3px -3px 10px rgba(255,255,255,0.4), 0 0 35px rgba(212,175,55,0.7);
     }
     @keyframes shimmer-sweep { 0%,100% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
@@ -140,7 +131,8 @@
 
     <div class="px-8 pt-10 pb-12 text-center">
       <div class="names text-7xl leading-none mb-1">Viviane</div>
-      <div class="names text-7xl leading-none text-amber-300 -mt-4">Israel</div>
+      <div class="text-5xl text-amber-300 my-1 font-light">e</div>
+      <div class="names text-7xl leading-none text-amber-300 -mt-3">Israel</div>
 
       <p class="mt-8 text-xl text-amber-100/95 tracking-wide leading-relaxed">
         Com o coração cheio de gratidão a Deus e amor,<br>
@@ -158,7 +150,7 @@
             <i id="music-icon" class="fa-solid fa-music text-2xl text-amber-400"></i>
             <div>
               <div class="text-sm font-medium text-amber-100">Como É Grande o Meu Amor por Você</div>
-              <div class="text-xs text-amber-400/70">Tocando automaticamente</div>
+              <div class="text-xs text-amber-400/70">nossa musica</div>
             </div>
           </div>
           <i id="play-pause-icon" class="fa-solid fa-pause text-2xl text-amber-400"></i>
@@ -168,12 +160,6 @@
       <div class="grid grid-cols-3 gap-4 mt-12">
         <button onclick="openRSVP()" class="btn btn-main col-span-3 text-white font-semibold py-7 rounded-3xl flex items-center justify-center gap-3 text-xl shadow-xl">
           <i class="fa-solid fa-heart"></i> Confirmar Presença
-        </button>
-        <button onclick="openMaps()" class="btn bg-white/10 hover:bg-white/20 border border-white/30 py-6 rounded-3xl flex flex-col items-center gap-1.5 text-sm font-medium">
-          <i class="fa-solid fa-map text-2xl"></i><span>Como Chegar</span>
-        </button>
-        <button onclick="openPix()" class="btn bg-white/10 hover:bg-white/20 border border-white/30 py-6 rounded-3xl flex flex-col items-center gap-1.5 text-sm font-medium">
-          <i class="fa-solid fa-gift text-2xl"></i><span>Pix</span>
         </button>
       </div>
     </div>
@@ -187,23 +173,34 @@
     <span id="toast-text"></span>
   </div>
 
-  <!-- Modais -->
+  <!-- Modal RSVP (mantido igual) -->
   <div id="modal-rsvp" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
     <div class="bg-zinc-950 border border-amber-400/40 rounded-3xl max-w-md w-full p-8 relative">
       <button onclick="closeModal('rsvp')" class="absolute top-6 right-6 text-4xl text-amber-400">×</button>
       <h2 class="names text-4xl text-center mb-8">Confirmar presença</h2>
+      
       <form id="rsvp-form" class="space-y-6">
-        <input id="nome" type="text" placeholder="Seu nome completo" required class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5 text-lg">
-        <div class="grid grid-cols-2 gap-4">
-          <select id="qtd" class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5">
-            <option value="1">1 pessoa</option><option value="2" selected>2 pessoas</option><option value="3">3 pessoas</option><option value="4">4 pessoas</option>
-          </select>
-          <select id="status" class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5">
-            <option value="Confirmo com alegria!">Confirmo com alegria!</option>
-            <option value="Infelizmente não poderei">Não poderei ir</option>
-          </select>
-        </div>
-        <button type="submit" class="w-full py-7 bg-gradient-to-r from-amber-400 to-amber-500 text-zinc-950 font-bold text-xl rounded-3xl">Enviar no WhatsApp</button>
+        <input id="nome" type="text" placeholder="Nome completo do responsável" required 
+               class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5 text-lg">
+
+        <input id="contato" type="tel" placeholder="Telefone com DDD (ex: 11955518944)" required 
+               class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5 text-lg">
+
+        <select id="qtd" required onchange="gerarCamposConvidados()" 
+                class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5">
+          <option value="">Quantidade total de pessoas (incluindo você)</option>
+          <option value="1">1 pessoa (só eu)</option>
+          <option value="2" selected>2 pessoas</option>
+          <option value="3">3 pessoas</option>
+          <option value="4">4 pessoas</option>
+          <option value="5">5 pessoas</option>
+        </select>
+
+        <div id="campos-convidados" class="space-y-4 mt-4"></div>
+
+        <button type="submit" class="w-full py-7 bg-gradient-to-r from-amber-400 to-amber-500 text-zinc-950 font-bold text-xl rounded-3xl">
+          Enviar Confirmação
+        </button>
       </form>
     </div>
   </div>
@@ -218,7 +215,7 @@
   </div>
 
   <script>
-    // ====================== PARTÍCULAS 2026 ======================
+    // ====================== PARTÍCULAS ======================
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -287,7 +284,8 @@
     });
 
     // ====================== RESTO DO CÓDIGO ======================
-    const PIX_KEY = "11955518944";
+    const POWER_AUTOMATE_URL = "https://default72b5f4168f414c88a6a0bb4b913838.88.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/d938ef7a847445fda67467148d4cd267/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=vgrzmUyS92oP8Q-PdONG9fV5urmiwUL9KcMlSUtE4U8";
+
     const WHATS_NUMBER = "5511977524596";
     const LOCAL = "Chácara Recanto Mário, Jaceguava, São Paulo - SP";
     const WEDDING_DATE = new Date("2026-05-23T16:00:00-03:00");
@@ -323,22 +321,74 @@
       isPlaying = !isPlaying;
     }
 
-    function openRSVP() { document.getElementById('modal-rsvp').classList.remove('hidden'); }
+    function openRSVP() { 
+      document.getElementById('modal-rsvp').classList.remove('hidden'); 
+      document.getElementById('campos-convidados').innerHTML = '';
+    }
     function openPix() { document.getElementById('modal-pix').classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
     function openMaps() { window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(LOCAL)}`, '_blank'); }
     async function copyPix() { await navigator.clipboard.writeText(PIX_KEY); showToast('✅ Chave Pix copiada!'); }
 
-    document.getElementById('rsvp-form').addEventListener('submit', function(e) {
+    function gerarCamposConvidados() {
+      const qtd = parseInt(document.getElementById('qtd').value);
+      const container = document.getElementById('campos-convidados');
+      container.innerHTML = '';
+
+      if (isNaN(qtd) || qtd <= 1) return;
+
+      for (let i = 2; i <= qtd; i++) {
+        const div = document.createElement('div');
+        div.innerHTML = `
+          <label class="block text-amber-300 text-sm mb-1">Nome completo do convidado ${i}</label>
+          <input type="text" id="convidado${i}" placeholder="Nome e sobrenome completo" required
+                 class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5 text-lg">
+        `;
+        container.appendChild(div);
+      }
+    }
+
+    document.getElementById('rsvp-form').addEventListener('submit', async function(e) {
       e.preventDefault();
+
       const nome = document.getElementById('nome').value.trim();
+      const contato = document.getElementById('contato').value.trim();
       const qtd = document.getElementById('qtd').value;
-      const status = document.getElementById('status').value;
-      const msg = `Olá! ${status}\nNome: ${nome}\nQuantidade: ${qtd} pessoas\nLocal: ${LOCAL}`;
-      window.open(`https://wa.me/${WHATS_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+
+      let listaNomes = [nome];
+      const qtdNum = parseInt(qtd);
+      for (let i = 2; i <= qtdNum; i++) {
+        const campo = document.getElementById(`convidado${i}`);
+        if (campo) listaNomes.push(campo.value.trim());
+      }
+
+      const convidadosTexto = listaNomes.filter(n => n).join(', ');
+
+      try {
+        const response = await fetch(POWER_AUTOMATE_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            "Nome": nome,
+            "Contato": contato,
+            "Quantidade de pessoas": qtd,
+            "convidados": convidadosTexto
+          })
+        });
+
+        if (response.ok) {
+          showToast("✅ Confirmação salva com sucesso!");
+          
+          const msg = `Olá! Confirmo presença!\nNome: ${nome}\nTelefone: ${contato}\nQuantidade: ${qtd} pessoas\nConvidados: ${convidadosTexto}`;
+          window.open(`https://wa.me/${WHATS_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+        } else {
+          showToast("❌ Erro ao salvar.");
+        }
+      } catch (err) {
+        showToast("❌ Erro de conexão.");
+      }
+
       closeModal('rsvp');
-      confetti({ particleCount: 280, spread: 100 });
-      showToast('💛 Obrigado! Mal podemos esperar para te ver!');
     });
 
     window.onload = () => {
