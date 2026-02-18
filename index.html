@@ -14,7 +14,7 @@
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.85)), url('1.png') center/cover no-repeat fixed;
+      background: #0a0a0a; /* Fundo preto puro */
       color: #fefefe;
       min-height: 100vh;
       overflow-x: hidden;
@@ -26,14 +26,13 @@
       inset: 0; 
       pointer-events: none; 
       z-index: 1; 
-      opacity: 0.85; 
+      opacity: 0.65; 
     }
 
     .card {
-      background: rgba(15,15,15,0.85);
+      background: rgba(15,15,15,0.95);
       backdrop-filter: blur(32px);
-      border: 2px solid transparent;
-      background-clip: padding-box;
+      border: 2px solid #6B7F4A; /* Borda oliva */
       box-shadow: 0 40px 100px rgba(0,0,0,0.95);
       border-radius: 36px;
       max-width: 520px;
@@ -47,9 +46,10 @@
       position: absolute;
       inset: -3px;
       border-radius: 39px;
-      background: linear-gradient(135deg, #d4af37, #e0c98a, #6B7F4A);
+      background: linear-gradient(135deg, #6B7F4A, #8A9A5B, #556B2F);
       z-index: -1;
       filter: blur(1px);
+      opacity: 0.9;
     }
 
     .diptych { 
@@ -70,13 +70,14 @@
     .caption {
       position: absolute; bottom: 24px; left: 0; right: 0; text-align: center;
       font-family: 'Playfair Display', serif; font-size: 1.25rem; line-height: 1.15;
-      color: #fff; text-shadow: 0 4px 20px rgba(0,0,0,0.95);
+      color: #c2ceb6; /* Oliva claro */
+      text-shadow: 0 4px 20px rgba(0,0,0,0.95);
     }
 
     .divider { 
-      background: linear-gradient(#d4af37, #556b2f, #d4af37); 
+      background: linear-gradient(#6B7F4A, #8A9A5B, #6B7F4A); 
       width: 5px; 
-      box-shadow: 0 0 25px #d4af37; 
+      box-shadow: 0 0 25px #6B7F4A; 
       position: relative; 
     }
     .divider::before {
@@ -86,8 +87,8 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 58px;
-      color: #f5e8b3;
-      text-shadow: 0 0 15px #d4af37, 0 0 30px rgba(212,175,55,0.8);
+      color: #c2ceb6;
+      text-shadow: 0 0 15px #6B7F4A, 0 0 30px rgba(107,127,74,0.8);
       z-index: 2;
       animation: pulse-heart 3s infinite ease-in-out;
     }
@@ -99,28 +100,31 @@
     .names {
       font-family: 'Playfair Display', serif;
       letter-spacing: -3px;
-      background: linear-gradient(90deg, #d4af37, #fff, #d4af37);
+      background: linear-gradient(90deg, #6B7F4A, #c2ceb6, #6B7F4A);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       animation: shimmer-sweep 7s linear infinite;
-      text-shadow: 4px 4px 12px rgba(0,0,0,0.9), -3px -3px 10px rgba(255,255,255,0.4), 0 0 35px rgba(212,175,55,0.7);
+      text-shadow: 4px 4px 12px rgba(0,0,0,0.9), 0 0 35px rgba(107,127,74,0.7);
     }
+    @keyframes shimmer-sweep { 0%,100% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
     .btn-main {
-      background: linear-gradient(to right, #556b2f, #8a9a5b);
+      background: linear-gradient(to right, #6B7F4A, #8A9A5B); /* Predominante oliva */
+      color: white;
+      font-weight: 600;
     }
 
     .btn-soft {
       background: rgba(255,255,255,0.08);
-      border: 2px solid rgba(212,175,55,0.4);
+      border: 2px solid #6B7F4A;
       transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
     }
     .btn-soft:hover {
-      background: rgba(212,175,55,0.15);
-      border-color: #d4af37;
+      background: rgba(138,154,91,0.15);
+      border-color: #8A9A5B;
       transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(212,175,55,0.25);
+      box-shadow: 0 10px 25px rgba(107,127,74,0.25);
     }
 
     #music-btn {
@@ -128,19 +132,12 @@
     }
     #music-btn:hover {
       transform: scale(1.1);
-      box-shadow: 0 0 30px rgba(212,175,55,0.4);
+      box-shadow: 0 0 30px rgba(107,127,74,0.4);
     }
 
     .section-spacing { margin-top: 1.75rem; }
     @media (min-width: 768px) {
       .section-spacing { margin-top: 2.5rem; }
-    }
-
-    /* Modal mais bonito (igual à imagem que você mandou) */
-    #modal-rsvp .modal-content {
-      background: #111111;
-      border: 1px solid #d4af37;
-      box-shadow: 0 0 60px rgba(212,175,55,0.3);
     }
   </style>
 </head>
@@ -163,25 +160,25 @@
 
     <div class="px-6 pt-6 pb-8 text-center md:px-8 md:pt-10 md:pb-12">
       <div class="names text-6xl md:text-7xl leading-none mb-1">Viviane</div>
-      <div class="text-4xl md:text-5xl text-amber-300 my-1 font-light">e</div>
-      <div class="names text-6xl md:text-7xl leading-none text-amber-300 -mt-3">Israel</div>
+      <div class="text-4xl md:text-5xl text-[#8A9A5B] my-1 font-light">e</div>
+      <div class="names text-6xl md:text-7xl leading-none text-[#8A9A5B] -mt-3">Israel</div>
 
-      <p class="mt-6 text-lg md:text-xl text-amber-100/95 tracking-wide leading-relaxed">
+      <p class="mt-6 text-lg md:text-xl text-[#c2ceb6] tracking-wide leading-relaxed">
         Com o coração cheio de gratidão a Deus e amor,<br>
         convidamos você para o dia mais lindo de nossas vidas.
       </p>
 
-      <div class="mt-6 text-3xl md:text-4xl font-light text-amber-300">23 de maio de 2026 • 16h</div>
-      <div class="text-amber-100/80 text-base md:text-lg">Av. Jaceguava, 3005 - Balneário São José, São Paulo - SP, 04870-425</div>
+      <div class="mt-6 text-3xl md:text-4xl font-light text-[#8A9A5B]">23 de maio de 2026 • 16h</div>
+      <div class="text-[#c2ceb6] text-base md:text-lg">Av. Jaceguava, 3005 - Balneário São José, São Paulo - SP, 04870-425</div>
 
       <div id="countdown" class="grid grid-cols-4 gap-3 md:gap-4 mt-8 md:mt-12 bg-black/40 rounded-3xl p-5 md:p-6"></div>
 
       <div class="section-spacing flex flex-col items-center">
         <button onclick="toggleMusic()" id="music-btn"
-                class="w-14 h-14 md:w-16 md:h-16 flex items-center justify-center bg-zinc-900/90 border-2 border-amber-400/60 hover:border-amber-400 rounded-3xl shadow-2xl">
-          <i id="play-pause-icon" class="fa-solid fa-pause text-3xl md:text-4xl text-amber-400"></i>
+                class="w-14 h-14 md:w-16 md:h-16 flex items-center justify-center bg-zinc-900 border-2 border-[#6B7F4A] hover:border-[#8A9A5B] rounded-3xl shadow-2xl">
+          <i id="play-pause-icon" class="fa-solid fa-pause text-3xl md:text-4xl text-[#8A9A5B]"></i>
         </button>
-        <div class="mt-2 text-[9px] md:text-[10px] font-light tracking-[1.5px] text-amber-400/70">NOSSA MÚSICA</div>
+        <div class="mt-2 text-[9px] md:text-[10px] font-light tracking-[1.5px] text-[#8A9A5B]">NOSSA MÚSICA</div>
       </div>
 
       <div class="grid grid-cols-3 gap-4 mt-8 md:mt-12">
@@ -194,19 +191,19 @@
         <div class="grid grid-cols-2 gap-4">
           <button onclick="openMaps()" 
                   class="btn-soft h-full flex flex-col items-center justify-center gap-3 py-8 rounded-3xl text-white">
-            <i class="fa-solid fa-location-dot text-4xl md:text-5xl text-amber-400"></i>
+            <i class="fa-solid fa-location-dot text-4xl md:text-5xl text-[#8A9A5B]"></i>
             <span class="font-semibold text-base md:text-lg tracking-wide">Como Chegar</span>
           </button>
 
           <button onclick="openPix()" 
                   class="btn-soft h-full flex flex-col items-center justify-center gap-3 py-8 rounded-3xl text-white">
-            <i class="fa-solid fa-gift text-4xl md:text-5xl text-amber-400"></i>
+            <i class="fa-solid fa-gift text-4xl md:text-5xl text-[#8A9A5B]"></i>
             <span class="font-semibold text-base md:text-lg tracking-wide">Pix</span>
           </button>
         </div>
 
         <button onclick="openListaPresentes()" 
-                class="mt-4 w-full py-6 md:py-7 bg-gradient-to-r from-amber-400 to-amber-500 text-zinc-950 font-bold text-lg md:text-xl rounded-3xl flex items-center justify-center gap-3 shadow-xl">
+                class="mt-4 w-full py-6 md:py-7 bg-gradient-to-r from-[#6B7F4A] to-[#8A9A5B] text-white font-bold text-lg md:text-xl rounded-3xl flex items-center justify-center gap-3 shadow-xl">
           <i class="fa-solid fa-gifts"></i> 
           Lista de Presentes
         </button>
@@ -218,26 +215,26 @@
     <source src="como_e_grande.mp3" type="audio/mpeg">
   </audio>
 
-  <div id="toast" class="hidden fixed bottom-8 left-1/2 -translate-x-1/2 bg-zinc-900 border border-amber-400/80 px-8 py-4 rounded-3xl text-amber-100 text-sm font-medium flex items-center gap-3 shadow-2xl z-50">
+  <div id="toast" class="hidden fixed bottom-8 left-1/2 -translate-x-1/2 bg-zinc-900 border border-[#6B7F4A] px-8 py-4 rounded-3xl text-[#c2ceb6] text-sm font-medium flex items-center gap-3 shadow-2xl z-50">
     <span id="toast-text"></span>
   </div>
 
-  <!-- MODAL RSVP (corrigido + visual mais próximo da imagem) -->
+  <!-- Modal RSVP -->
   <div id="modal-rsvp" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
-    <div class="modal-content bg-[#111111] border border-[#d4af37] rounded-3xl max-w-md w-full p-8 relative overflow-hidden">
-      <button onclick="closeModal('rsvp')" class="absolute top-6 right-6 text-3xl text-[#d4af37] hover:text-amber-300 transition-colors">×</button>
+    <div class="modal-content bg-[#111111] border border-[#6B7F4A] rounded-3xl max-w-md w-full p-8 relative overflow-hidden">
+      <button onclick="closeModal('rsvp')" class="absolute top-6 right-6 text-3xl text-[#8A9A5B] hover:text-[#c2ceb6] transition-colors">×</button>
       
-      <h2 class="names text-4xl text-center mb-10 text-[#d4af37]">Confirmar presença</h2>
+      <h2 class="names text-4xl text-center mb-10">Confirmar presença</h2>
       
       <form id="rsvp-form" class="space-y-6">
         <input id="nome" type="text" placeholder="Nome completo do responsável" required 
-               class="w-full bg-[#1a1a1a] border border-[#d4af37]/40 focus:border-[#d4af37] rounded-2xl px-6 py-5 text-lg text-white placeholder:text-amber-300/50">
+               class="w-full bg-[#1a1a1a] border border-[#6B7F4A] focus:border-[#8A9A5B] rounded-2xl px-6 py-5 text-lg text-white">
 
         <input id="contato" type="tel" placeholder="Telefone com DDD (ex: 11955518944)" required 
-               class="w-full bg-[#1a1a1a] border border-[#d4af37]/40 focus:border-[#d4af37] rounded-2xl px-6 py-5 text-lg text-white placeholder:text-amber-300/50">
+               class="w-full bg-[#1a1a1a] border border-[#6B7F4A] focus:border-[#8A9A5B] rounded-2xl px-6 py-5 text-lg text-white">
 
         <select id="qtd" required onchange="gerarCamposConvidados()" 
-                class="w-full bg-[#1a1a1a] border border-[#d4af37]/40 focus:border-[#d4af37] rounded-2xl px-6 py-5 text-lg text-white">
+                class="w-full bg-[#1a1a1a] border border-[#6B7F4A] focus:border-[#8A9A5B] rounded-2xl px-6 py-5 text-lg text-white">
           <option value="">Quantidade total de pessoas (incluindo você)</option>
           <option value="1">1 pessoa (só eu)</option>
           <option value="2" selected>2 pessoas</option>
@@ -249,20 +246,20 @@
         <div id="campos-convidados" class="space-y-4 mt-4"></div>
 
         <button type="submit" 
-                class="w-full py-7 bg-gradient-to-r from-[#facc15] to-[#eab308] text-zinc-950 font-bold text-xl rounded-3xl shadow-xl hover:brightness-110 transition-all">
+                class="w-full py-7 bg-gradient-to-r from-[#6B7F4A] to-[#8A9A5B] text-white font-bold text-xl rounded-3xl shadow-xl">
           Enviar Confirmação
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Modal Pix (mantido) -->
+  <!-- Modal Pix -->
   <div id="modal-pix" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
-    <div class="bg-zinc-950 border border-amber-400/40 rounded-3xl max-w-md w-full p-8 text-center relative">
-      <button onclick="closeModal('pix')" class="absolute top-6 right-6 text-4xl text-amber-400">×</button>
-      <i class="fa-solid fa-gift text-7xl text-amber-400 mb-6"></i>
-      <div class="font-mono text-3xl text-amber-300 mb-8" id="pix-key">11955518944</div>
-      <button onclick="copyPix()" class="w-full py-6 border border-amber-400 rounded-3xl font-semibold">Copiar chave Pix</button>
+    <div class="bg-zinc-950 border border-[#6B7F4A] rounded-3xl max-w-md w-full p-8 text-center relative">
+      <button onclick="closeModal('pix')" class="absolute top-6 right-6 text-4xl text-[#8A9A5B]">×</button>
+      <i class="fa-solid fa-gift text-7xl text-[#8A9A5B] mb-6"></i>
+      <div class="font-mono text-3xl text-[#c2ceb6] mb-8" id="pix-key">11955518944</div>
+      <button onclick="copyPix()" class="w-full py-6 border border-[#6B7F4A] rounded-3xl font-semibold">Copiar chave Pix</button>
     </div>
   </div>
 
@@ -284,7 +281,7 @@
         this.angle = Math.random() * Math.PI * 2;
         this.angleSpeed = (Math.random() - 0.5) * 0.04;
         this.type = Math.random() > 0.65 ? 'heart' : (Math.random() > 0.5 ? 'sparkle' : 'dot');
-        this.hue = Math.random() > 0.8 ? 48 : 42;
+        this.hue = Math.random() > 0.8 ? 85 : 95; /* tons oliva */
       }
       update() {
         this.y -= this.speed;
@@ -302,7 +299,7 @@
       draw() {
         ctx.save();
         ctx.globalAlpha = this.opacity;
-        ctx.fillStyle = `hsl(${this.hue}, 90%, 88%)`;
+        ctx.fillStyle = `hsl(${this.hue}, 40%, 75%)`;
         if (this.type === 'heart') {
           ctx.font = `${this.size}px Arial`;
           ctx.fillText('♡', this.x, this.y);
@@ -358,10 +355,10 @@
       const m = Math.floor((diff % 3600000) / 60000);
       const s = Math.floor((diff % 60000) / 1000);
       document.getElementById('countdown').innerHTML = `
-        <div class="text-center"><div class="text-4xl md:text-5xl font-bold text-amber-300">${d}</div><div class="text-xs tracking-widest text-amber-100/60">DIAS</div></div>
-        <div class="text-center"><div class="text-4xl md:text-5xl font-bold text-amber-300">${h}</div><div class="text-xs tracking-widest text-amber-100/60">HORAS</div></div>
-        <div class="text-center"><div class="text-4xl md:text-5xl font-bold text-amber-300">${m}</div><div class="text-xs tracking-widest text-amber-100/60">MIN</div></div>
-        <div class="text-center"><div class="text-4xl md:text-5xl font-bold text-amber-300">${s}</div><div class="text-xs tracking-widest text-amber-100/60">SEG</div></div>
+        <div class="text-center"><div class="text-4xl md:text-5xl font-bold text-[#8A9A5B]">${d}</div><div class="text-xs tracking-widest text-[#c2ceb6]">DIAS</div></div>
+        <div class="text-center"><div class="text-4xl md:text-5xl font-bold text-[#8A9A5B]">${h}</div><div class="text-xs tracking-widest text-[#c2ceb6]">HORAS</div></div>
+        <div class="text-center"><div class="text-4xl md:text-5xl font-bold text-[#8A9A5B]">${m}</div><div class="text-xs tracking-widest text-[#c2ceb6]">MIN</div></div>
+        <div class="text-center"><div class="text-4xl md:text-5xl font-bold text-[#8A9A5B]">${s}</div><div class="text-xs tracking-widest text-[#c2ceb6]">SEG</div></div>
       `;
     }
 
@@ -375,7 +372,7 @@
     function openRSVP() { 
       document.getElementById('modal-rsvp').classList.remove('hidden'); 
       document.getElementById('campos-convidados').innerHTML = '';
-      gerarCamposConvidados();   // ← CORREÇÃO DO BUG
+      gerarCamposConvidados();
     }
 
     function openPix() { document.getElementById('modal-pix').classList.remove('hidden'); }
@@ -397,9 +394,9 @@
       for (let i = 2; i <= qtd; i++) {
         const div = document.createElement('div');
         div.innerHTML = `
-          <label class="block text-amber-300 text-sm mb-1">Nome completo do convidado ${i}</label>
+          <label class="block text-[#8A9A5B] text-sm mb-1">Nome completo do convidado ${i}</label>
           <input type="text" id="convidado${i}" placeholder="Nome e sobrenome completo" required
-                 class="w-full bg-[#1a1a1a] border border-[#d4af37]/40 focus:border-[#d4af37] rounded-2xl px-6 py-5 text-lg text-white">
+                 class="w-full bg-[#1a1a1a] border border-[#6B7F4A] focus:border-[#8A9A5B] rounded-2xl px-6 py-5 text-lg text-white">
         `;
         container.appendChild(div);
       }
