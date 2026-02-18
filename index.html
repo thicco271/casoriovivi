@@ -52,20 +52,24 @@
       filter: blur(1px);
     }
 
-    .diptych { display: grid; grid-template-columns: 1fr 5px 1fr; height: 440px; position: relative; }
+    .diptych { 
+      display: grid; 
+      grid-template-columns: 1fr 5px 1fr; 
+      height: 320px;
+    }
+    @media (min-width: 768px) {
+      .diptych { height: 440px; }
+    }
+
     .photo-left, .photo-right { position: relative; overflow: hidden; }
     .photo-left img, .photo-right img {
       width: 100%; height: 100%; object-fit: cover;
       transition: transform 16s cubic-bezier(0.25,0.1,0.25,1), filter 0.6s ease;
     }
-    .photo-left:hover img, .photo-right:hover img {
-      transform: scale(1.18);
-      filter: brightness(1.15) contrast(1.08);
-    }
 
     .caption {
-      position: absolute; bottom: 38px; left: 0; right: 0; text-align: center;
-      font-family: 'Playfair Display', serif; font-size: 1.45rem; line-height: 1.15;
+      position: absolute; bottom: 24px; left: 0; right: 0; text-align: center;
+      font-family: 'Playfair Display', serif; font-size: 1.25rem; line-height: 1.15;
       color: #fff; text-shadow: 0 4px 20px rgba(0,0,0,0.95);
     }
 
@@ -81,11 +85,9 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 68px;
+      font-size: 58px;
       color: #f5e8b3;
-      text-shadow: 
-        0 0 15px #d4af37,
-        0 0 30px rgba(212,175,55,0.8);
+      text-shadow: 0 0 15px #d4af37, 0 0 30px rgba(212,175,55,0.8);
       z-index: 2;
       animation: pulse-heart 3s infinite ease-in-out;
     }
@@ -96,7 +98,7 @@
 
     .names {
       font-family: 'Playfair Display', serif;
-      letter-spacing: -4px;
+      letter-spacing: -3px;
       background: linear-gradient(90deg, #d4af37, #fff, #d4af37);
       -webkit-background-clip: text;
       background-clip: text;
@@ -104,7 +106,6 @@
       animation: shimmer-sweep 7s linear infinite;
       text-shadow: 4px 4px 12px rgba(0,0,0,0.9), -3px -3px 10px rgba(255,255,255,0.4), 0 0 35px rgba(212,175,55,0.7);
     }
-    @keyframes shimmer-sweep { 0%,100% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
     .btn-main {
       background: linear-gradient(to right, #556b2f, #8a9a5b);
@@ -122,13 +123,24 @@
       box-shadow: 0 10px 25px rgba(212,175,55,0.25);
     }
 
-    /* Botão música compacto */
     #music-btn {
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     #music-btn:hover {
       transform: scale(1.1);
       box-shadow: 0 0 30px rgba(212,175,55,0.4);
+    }
+
+    .section-spacing { margin-top: 1.75rem; }
+    @media (min-width: 768px) {
+      .section-spacing { margin-top: 2.5rem; }
+    }
+
+    /* Modal mais bonito (igual à imagem que você mandou) */
+    #modal-rsvp .modal-content {
+      background: #111111;
+      border: 1px solid #d4af37;
+      box-shadow: 0 0 60px rgba(212,175,55,0.3);
     }
   </style>
 </head>
@@ -149,55 +161,52 @@
       </div>
     </div>
 
-    <div class="px-8 pt-10 pb-12 text-center">
-      <div class="names text-7xl leading-none mb-1">Viviane</div>
-      <div class="text-5xl text-amber-300 my-1 font-light">e</div>
-      <div class="names text-7xl leading-none text-amber-300 -mt-3">Israel</div>
+    <div class="px-6 pt-6 pb-8 text-center md:px-8 md:pt-10 md:pb-12">
+      <div class="names text-6xl md:text-7xl leading-none mb-1">Viviane</div>
+      <div class="text-4xl md:text-5xl text-amber-300 my-1 font-light">e</div>
+      <div class="names text-6xl md:text-7xl leading-none text-amber-300 -mt-3">Israel</div>
 
-      <p class="mt-8 text-xl text-amber-100/95 tracking-wide leading-relaxed">
+      <p class="mt-6 text-lg md:text-xl text-amber-100/95 tracking-wide leading-relaxed">
         Com o coração cheio de gratidão a Deus e amor,<br>
         convidamos você para o dia mais lindo de nossas vidas.
       </p>
 
-      <div class="mt-10 mb-1 text-4xl font-light text-amber-300">23 de maio de 2026 • 16h</div>
-      <div class="text-amber-100/80 text-lg">Av. Jaceguava, 3005 - Balneário São José, São Paulo - SP, 04870-425</div>
+      <div class="mt-6 text-3xl md:text-4xl font-light text-amber-300">23 de maio de 2026 • 16h</div>
+      <div class="text-amber-100/80 text-base md:text-lg">Av. Jaceguava, 3005 - Balneário São José, São Paulo - SP, 04870-425</div>
 
-      <div id="countdown" class="grid grid-cols-4 gap-4 mt-12 bg-black/40 rounded-3xl p-6"></div>
+      <div id="countdown" class="grid grid-cols-4 gap-3 md:gap-4 mt-8 md:mt-12 bg-black/40 rounded-3xl p-5 md:p-6"></div>
 
-      <!-- === BOTÃO DE MÚSICA COMPACTO (só o play/pause) === -->
-      <div class="mt-10 flex flex-col items-center">
+      <div class="section-spacing flex flex-col items-center">
         <button onclick="toggleMusic()" id="music-btn"
-                class="w-16 h-16 flex items-center justify-center bg-zinc-900/90 border-2 border-amber-400/60 hover:border-amber-400 rounded-3xl shadow-2xl">
-          <i id="play-pause-icon" class="fa-solid fa-pause text-4xl text-amber-400"></i>
+                class="w-14 h-14 md:w-16 md:h-16 flex items-center justify-center bg-zinc-900/90 border-2 border-amber-400/60 hover:border-amber-400 rounded-3xl shadow-2xl">
+          <i id="play-pause-icon" class="fa-solid fa-pause text-3xl md:text-4xl text-amber-400"></i>
         </button>
-        <div class="mt-3 text-[10px] font-light tracking-[1.5px] text-amber-400/70">NOSSA MÚSICA</div>
+        <div class="mt-2 text-[9px] md:text-[10px] font-light tracking-[1.5px] text-amber-400/70">NOSSA MÚSICA</div>
       </div>
 
-      <!-- Botão Confirmar Presença -->
-      <div class="grid grid-cols-3 gap-4 mt-12">
-        <button onclick="openRSVP()" class="btn btn-main col-span-3 text-white font-semibold py-7 rounded-3xl flex items-center justify-center gap-3 text-xl shadow-xl">
+      <div class="grid grid-cols-3 gap-4 mt-8 md:mt-12">
+        <button onclick="openRSVP()" class="btn btn-main col-span-3 text-white font-semibold py-6 md:py-7 rounded-3xl flex items-center justify-center gap-3 text-lg md:text-xl shadow-xl">
           <i class="fa-solid fa-heart"></i> Confirmar Presença
         </button>
       </div>
 
-      <!-- Botões Como Chegar + Pix + Lista de Presentes -->
-      <div class="mt-10">
+      <div class="mt-8 md:mt-10">
         <div class="grid grid-cols-2 gap-4">
           <button onclick="openMaps()" 
-                  class="btn-soft h-full flex flex-col items-center justify-center gap-3 py-9 rounded-3xl text-white">
-            <i class="fa-solid fa-location-dot text-5xl text-amber-400"></i>
-            <span class="font-semibold text-lg tracking-wide">Como Chegar</span>
+                  class="btn-soft h-full flex flex-col items-center justify-center gap-3 py-8 rounded-3xl text-white">
+            <i class="fa-solid fa-location-dot text-4xl md:text-5xl text-amber-400"></i>
+            <span class="font-semibold text-base md:text-lg tracking-wide">Como Chegar</span>
           </button>
 
           <button onclick="openPix()" 
-                  class="btn-soft h-full flex flex-col items-center justify-center gap-3 py-9 rounded-3xl text-white">
-            <i class="fa-solid fa-gift text-5xl text-amber-400"></i>
-            <span class="font-semibold text-lg tracking-wide">Pix</span>
+                  class="btn-soft h-full flex flex-col items-center justify-center gap-3 py-8 rounded-3xl text-white">
+            <i class="fa-solid fa-gift text-4xl md:text-5xl text-amber-400"></i>
+            <span class="font-semibold text-base md:text-lg tracking-wide">Pix</span>
           </button>
         </div>
 
         <button onclick="openListaPresentes()" 
-                class="mt-4 w-full py-7 bg-gradient-to-r from-amber-400 to-amber-500 text-zinc-950 font-bold text-xl rounded-3xl flex items-center justify-center gap-3 shadow-xl">
+                class="mt-4 w-full py-6 md:py-7 bg-gradient-to-r from-amber-400 to-amber-500 text-zinc-950 font-bold text-lg md:text-xl rounded-3xl flex items-center justify-center gap-3 shadow-xl">
           <i class="fa-solid fa-gifts"></i> 
           Lista de Presentes
         </button>
@@ -213,21 +222,22 @@
     <span id="toast-text"></span>
   </div>
 
-  <!-- Modal RSVP -->
+  <!-- MODAL RSVP (corrigido + visual mais próximo da imagem) -->
   <div id="modal-rsvp" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
-    <div class="bg-zinc-950 border border-amber-400/40 rounded-3xl max-w-md w-full p-8 relative">
-      <button onclick="closeModal('rsvp')" class="absolute top-6 right-6 text-4xl text-amber-400">×</button>
-      <h2 class="names text-4xl text-center mb-8">Confirmar presença</h2>
+    <div class="modal-content bg-[#111111] border border-[#d4af37] rounded-3xl max-w-md w-full p-8 relative overflow-hidden">
+      <button onclick="closeModal('rsvp')" class="absolute top-6 right-6 text-3xl text-[#d4af37] hover:text-amber-300 transition-colors">×</button>
+      
+      <h2 class="names text-4xl text-center mb-10 text-[#d4af37]">Confirmar presença</h2>
       
       <form id="rsvp-form" class="space-y-6">
         <input id="nome" type="text" placeholder="Nome completo do responsável" required 
-               class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5 text-lg">
+               class="w-full bg-[#1a1a1a] border border-[#d4af37]/40 focus:border-[#d4af37] rounded-2xl px-6 py-5 text-lg text-white placeholder:text-amber-300/50">
 
         <input id="contato" type="tel" placeholder="Telefone com DDD (ex: 11955518944)" required 
-               class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5 text-lg">
+               class="w-full bg-[#1a1a1a] border border-[#d4af37]/40 focus:border-[#d4af37] rounded-2xl px-6 py-5 text-lg text-white placeholder:text-amber-300/50">
 
         <select id="qtd" required onchange="gerarCamposConvidados()" 
-                class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5">
+                class="w-full bg-[#1a1a1a] border border-[#d4af37]/40 focus:border-[#d4af37] rounded-2xl px-6 py-5 text-lg text-white">
           <option value="">Quantidade total de pessoas (incluindo você)</option>
           <option value="1">1 pessoa (só eu)</option>
           <option value="2" selected>2 pessoas</option>
@@ -238,14 +248,15 @@
 
         <div id="campos-convidados" class="space-y-4 mt-4"></div>
 
-        <button type="submit" class="w-full py-7 bg-gradient-to-r from-amber-400 to-amber-500 text-zinc-950 font-bold text-xl rounded-3xl">
+        <button type="submit" 
+                class="w-full py-7 bg-gradient-to-r from-[#facc15] to-[#eab308] text-zinc-950 font-bold text-xl rounded-3xl shadow-xl hover:brightness-110 transition-all">
           Enviar Confirmação
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Modal Pix -->
+  <!-- Modal Pix (mantido) -->
   <div id="modal-pix" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
     <div class="bg-zinc-950 border border-amber-400/40 rounded-3xl max-w-md w-full p-8 text-center relative">
       <button onclick="closeModal('pix')" class="absolute top-6 right-6 text-4xl text-amber-400">×</button>
@@ -324,9 +335,8 @@
       mouseY = e.clientY;
     });
 
-    // ====================== VARIÁVEIS E FUNÇÕES ======================
+    // ====================== VARIÁVEIS ======================
     const POWER_AUTOMATE_URL = "https://default72b5f4168f414c88a6a0bb4b913838.88.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/d938ef7a847445fda67467148d4cd267/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=vgrzmUyS92oP8Q-PdONG9fV5urmiwUL9KcMlSUtE4U8";
-
     const WHATS_NUMBER = "5511977524596";
     const LOCAL = "Av. Jaceguava, 3005 - Balneário São José, São Paulo - SP, 04870-425";
     const WEDDING_DATE = new Date("2026-05-23T16:00:00-03:00");
@@ -348,40 +358,30 @@
       const m = Math.floor((diff % 3600000) / 60000);
       const s = Math.floor((diff % 60000) / 1000);
       document.getElementById('countdown').innerHTML = `
-        <div class="text-center"><div class="text-5xl font-bold text-amber-300">${d}</div><div class="text-xs tracking-widest text-amber-100/60">DIAS</div></div>
-        <div class="text-center"><div class="text-5xl font-bold text-amber-300">${h}</div><div class="text-xs tracking-widest text-amber-100/60">HORAS</div></div>
-        <div class="text-center"><div class="text-5xl font-bold text-amber-300">${m}</div><div class="text-xs tracking-widest text-amber-100/60">MIN</div></div>
-        <div class="text-center"><div class="text-5xl font-bold text-amber-300">${s}</div><div class="text-xs tracking-widest text-amber-100/60">SEG</div></div>
+        <div class="text-center"><div class="text-4xl md:text-5xl font-bold text-amber-300">${d}</div><div class="text-xs tracking-widest text-amber-100/60">DIAS</div></div>
+        <div class="text-center"><div class="text-4xl md:text-5xl font-bold text-amber-300">${h}</div><div class="text-xs tracking-widest text-amber-100/60">HORAS</div></div>
+        <div class="text-center"><div class="text-4xl md:text-5xl font-bold text-amber-300">${m}</div><div class="text-xs tracking-widest text-amber-100/60">MIN</div></div>
+        <div class="text-center"><div class="text-4xl md:text-5xl font-bold text-amber-300">${s}</div><div class="text-xs tracking-widest text-amber-100/60">SEG</div></div>
       `;
     }
 
     function toggleMusic() {
       const icon = document.getElementById('play-pause-icon');
-      if (isPlaying) {
-        audio.pause();
-        icon.classList.replace('fa-pause', 'fa-play');
-      } else {
-        audio.play();
-        icon.classList.replace('fa-play', 'fa-pause');
-      }
+      if (isPlaying) { audio.pause(); icon.classList.replace('fa-pause','fa-play'); }
+      else { audio.play(); icon.classList.replace('fa-play','fa-pause'); }
       isPlaying = !isPlaying;
     }
 
     function openRSVP() { 
       document.getElementById('modal-rsvp').classList.remove('hidden'); 
       document.getElementById('campos-convidados').innerHTML = '';
+      gerarCamposConvidados();   // ← CORREÇÃO DO BUG
     }
+
     function openPix() { document.getElementById('modal-pix').classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
-
-    function openMaps() { 
-      window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(LOCAL)}`, '_blank'); 
-    }
-
-    function openListaPresentes() {
-      window.open('https://lista.havan.com.br/Convidado/ItensListaPresente/913655', '_blank');
-    }
-
+    function openMaps() { window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(LOCAL)}`, '_blank'); }
+    function openListaPresentes() { window.open('https://lista.havan.com.br/Convidado/ItensListaPresente/913655', '_blank'); }
     async function copyPix() { 
       await navigator.clipboard.writeText('11955518944'); 
       showToast('✅ Chave Pix copiada!'); 
@@ -399,7 +399,7 @@
         div.innerHTML = `
           <label class="block text-amber-300 text-sm mb-1">Nome completo do convidado ${i}</label>
           <input type="text" id="convidado${i}" placeholder="Nome e sobrenome completo" required
-                 class="w-full bg-zinc-900 border border-amber-400/30 rounded-2xl px-6 py-5 text-lg">
+                 class="w-full bg-[#1a1a1a] border border-[#d4af37]/40 focus:border-[#d4af37] rounded-2xl px-6 py-5 text-lg text-white">
         `;
         container.appendChild(div);
       }
@@ -407,44 +407,29 @@
 
     document.getElementById('rsvp-form').addEventListener('submit', async function(e) {
       e.preventDefault();
-
       const nome = document.getElementById('nome').value.trim();
       const contato = document.getElementById('contato').value.trim();
       const qtd = document.getElementById('qtd').value;
-
       let listaNomes = [nome];
       const qtdNum = parseInt(qtd);
       for (let i = 2; i <= qtdNum; i++) {
         const campo = document.getElementById(`convidado${i}`);
         if (campo) listaNomes.push(campo.value.trim());
       }
-
       const convidadosTexto = listaNomes.filter(n => n).join(', ');
 
       try {
         const response = await fetch(POWER_AUTOMATE_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            "Nome": nome,
-            "Contato": contato,
-            "Quantidade de pessoas": qtd,
-            "convidados": convidadosTexto
-          })
+          body: JSON.stringify({ "Nome": nome, "Contato": contato, "Quantidade de pessoas": qtd, "convidados": convidadosTexto })
         });
-
         if (response.ok) {
           showToast("✅ Confirmação salva com sucesso!");
-          
           const msg = `Olá! Confirmo presença!\nNome: ${nome}\nTelefone: ${contato}\nQuantidade: ${qtd} pessoas\nConvidados: ${convidadosTexto}`;
           window.open(`https://wa.me/${WHATS_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
-        } else {
-          showToast("❌ Erro ao salvar.");
-        }
-      } catch (err) {
-        showToast("❌ Erro de conexão.");
-      }
-
+        } else showToast("❌ Erro ao salvar.");
+      } catch (err) { showToast("❌ Erro de conexão."); }
       closeModal('rsvp');
     });
 
@@ -454,11 +439,8 @@
       updateCountdown();
       setInterval(updateCountdown, 1000);
       audio.volume = 0.75;
-      audio.play().catch(() => { 
-        isPlaying = false; 
-        document.getElementById('play-pause-icon').classList.replace('fa-pause','fa-play'); 
-      });
-      setTimeout(() => showToast('Bem-vindo(a) ao nosso convite de amor ✨'), 1200);
+      audio.play().catch(() => { isPlaying = false; document.getElementById('play-pause-icon').classList.replace('fa-pause','fa-play'); });
+      setTimeout(() => showToast('Bem-vindo(a) ao nosso convite de amor ✨'), 800);
       window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
