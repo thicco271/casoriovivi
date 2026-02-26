@@ -212,9 +212,9 @@
       </div>
 
       <div class="grid grid-cols-3 gap-4 mt-8 md:mt-12">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdEEqmN7vNYjsZ7oMnLazpidH1wzbeI4qut6iS6QVuDp4uB_A/viewform" rel="noopener" class="btn btn-main col-span-3 text-white font-semibold py-6 md:py-7 rounded-3xl flex items-center justify-center gap-3 text-lg md:text-xl shadow-xl">
+        <button onclick="openRSVP()" class="btn btn-main col-span-3 text-white font-semibold py-6 md:py-7 rounded-3xl flex items-center justify-center gap-3 text-lg md:text-xl shadow-xl">
           <i class="fa-solid fa-heart"></i> Confirmar Presença
-        </a>
+        </button>
       </div>
 
       <div class="mt-8 md:mt-10">
@@ -249,7 +249,41 @@
     <span id="toast-text"></span>
   </div>
 
-<!-- Modal Pix -->
+  <!-- Modal RSVP -->
+  <div id="modal-rsvp" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
+    <div class="modal-content bg-[#111111] border border-[#6B7F4A] rounded-3xl max-w-md w-full p-8 relative overflow-hidden">
+      <button onclick="closeModal('rsvp')" class="absolute top-6 right-6 text-3xl text-[#8A9A5B] hover:text-[#c2ceb6] transition-colors">×</button>
+      
+      <h2 class="names text-4xl text-center mb-10">Confirmar presença</h2>
+      
+      <form id="rsvp-form" class="space-y-6">
+        <input id="nome" type="text" placeholder="Nome completo do responsável" required 
+               class="w-full bg-[#1a1a1a] border border-[#6B7F4A] focus:border-[#8A9A5B] rounded-2xl px-6 py-5 text-lg text-white">
+
+        <input id="contato" type="tel" placeholder="Telefone com DDD (ex: 11955518944)" required 
+               class="w-full bg-[#1a1a1a] border border-[#6B7F4A] focus:border-[#8A9A5B] rounded-2xl px-6 py-5 text-lg text-white">
+
+        <select id="qtd" required onchange="gerarCamposConvidados()" 
+                class="w-full bg-[#1a1a1a] border border-[#6B7F4A] focus:border-[#8A9A5B] rounded-2xl px-6 py-5 text-lg text-white">
+          <option value="">Quantidade total de pessoas (incluindo você)</option>
+          <option value="1">1 pessoa (só eu)</option>
+          <option value="2" selected>2 pessoas</option>
+          <option value="3">3 pessoas</option>
+          <option value="4">4 pessoas</option>
+          <option value="5">5 pessoas</option>
+        </select>
+
+        <div id="campos-convidados" class="space-y-4 mt-4"></div>
+
+        <button type="submit" 
+                class="w-full py-7 bg-gradient-to-r from-[#6B7F4A] to-[#8A9A5B] text-white font-bold text-xl rounded-3xl shadow-xl">
+          Enviar Confirmação
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Pix -->
   <div id="modal-pix" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4">
     <div class="bg-zinc-950 border border-[#6B7F4A] rounded-3xl max-w-md w-full p-8 text-center relative">
       <button onclick="closeModal('pix')" class="absolute top-6 right-6 text-4xl text-[#8A9A5B]">×</button>
@@ -329,8 +363,11 @@
     });
 
     // ====================== VARIÁVEIS ======================
+    const POWER_AUTOMATE_URL = "https://default72b5f4168f414c88a6a0bb4b913838.88.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/d938ef7a847445fda67467148d4cd267/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=vgrzmUyS92oP8Q-PdONG9fV5urmiwUL9KcMlSUtE4U8";
+    const WHATS_NUMBER = "5511977524596";
     const LOCAL = "Av. Jaceguava, 3005 - Balneário São José, São Paulo - SP, 04870-425";
     const WEDDING_DATE = new Date("2026-05-23T16:00:00-03:00");
+  const GOOGLE_FORMS_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdEEqmN7vNYjsZ7oMnLazpidH1wzbeI4qut6iS6QVuDp4uB_A/viewform";
     const audio = document.getElementById('wedding-song');
     let isPlaying = true;
 
@@ -363,7 +400,8 @@
       isPlaying = !isPlaying;
     }
 
-    function openPix() { document.getElementById('modal-pix').classList.remove('hidden'); }
+    function openRSVP() { window.location.href = GOOGLE_FORMS_URL; }
+function openPix() { document.getElementById('modal-pix').classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(`modal-${id}`).classList.add('hidden'); }
     function openMaps() { window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(LOCAL)}`, '_blank'); }
     function openListaPresentes() { window.open('https://lista.havan.com.br/Convidado/ItensListaPresente/913655', '_blank'); }
@@ -371,7 +409,27 @@
       await navigator.clipboard.writeText('11955518944'); 
       showToast('✅ Chave Pix copiada!'); 
     }
+
+    function gerarCamposConvidados() {
+      const qtd = parseInt(document.getElementById('qtd').value);
+      const container = document.getElementById('campos-convidados');
+      container.innerHTML = '';
+
+      if (isNaN(qtd) || qtd <= 1) return;
+
+      for (let i = 2; i <= qtd; i++) {
+        const div = document.createElement('div');
+        div.innerHTML = `
+          <label class="block text-[#8A9A5B] text-sm mb-1">Nome completo do convidado ${i}</label>
+          <input type="text" id="convidado${i}" placeholder="Nome e sobrenome completo" required
+                 class="w-full bg-[#1a1a1a] border border-[#6B7F4A] focus:border-[#8A9A5B] rounded-2xl px-6 py-5 text-lg text-white">
+        `;
+        container.appendChild(div);
+      }
     }
+
+    document.getElementById('rsvp-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
       const nome = document.getElementById('nome').value.trim();
       const contato = document.getElementById('contato').value.trim();
       const qtd = document.getElementById('qtd').value;
